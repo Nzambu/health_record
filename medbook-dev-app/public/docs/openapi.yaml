@@ -1,0 +1,509 @@
+openapi: 3.0.3
+info:
+    title: Laravel
+    description: ''
+    version: 1.0.0
+servers:
+    -
+        url: 'http://localhost'
+paths:
+    /api/login:
+        post:
+            summary: Login
+            description: 'Gain access to the application'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: authorization
+                                    id: token
+                                    attributes: { access_token: null, token_type: null, expires_in: null }
+                                    links: { self: 'http://localhost/api/login' }
+                                properties:
+                                    type: { type: string, example: authorization }
+                                    id: { type: string, example: token }
+                                    attributes: { type: object, example: { access_token: null, token_type: null, expires_in: null } }
+                                    links: { type: object, example: { self: 'http://localhost/api/login' } }
+            tags:
+                - Authentication
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    description: 'The registered user email.'
+                                    example: rerum
+                                password:
+                                    type: string
+                                    description: 'The user secret code.'
+                                    example: id
+                            required:
+                                - email
+                                - password
+            security: []
+    /api/forgot_password:
+        post:
+            summary: 'Forgot password'
+            description: 'Send user an email with a link to change password in the event user forgot password or needs to change password'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: authorization
+                                    id: forgot_password
+                                    attributes: { message: 'Please check your email to get the change password link' }
+                                    links: { self: 'http://localhost/api/forgot_password' }
+                                properties:
+                                    type: { type: string, example: authorization }
+                                    id: { type: string, example: forgot_password }
+                                    attributes: { type: object, example: { message: 'Please check your email to get the change password link' } }
+                                    links: { type: object, example: { self: 'http://localhost/api/forgot_password' } }
+            tags:
+                - Authentication
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    description: 'The registered user email.'
+                                    example: dolor
+                            required:
+                                - email
+            security: []
+    '/api/change_password/{$link}':
+        post:
+            summary: 'Change password'
+            description: 'Set a new password that will be used to gain access the application'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: authorization
+                                    id: logout
+                                    attributes: { message: 'The password was set successfully' }
+                                    links: { self: 'http://localhost/api/change_password/1' }
+                                properties:
+                                    type: { type: string, example: authorization }
+                                    id: { type: string, example: logout }
+                                    attributes: { type: object, example: { message: 'The password was set successfully' } }
+                                    links: { type: object, example: { self: 'http://localhost/api/change_password/1' } }
+            tags:
+                - Authentication
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                password:
+                                    type: string
+                                    description: 'The new password that is a minimum of 8 characters.'
+                                    example: placeat
+                                password_confirmation:
+                                    type: string
+                                    description: 'Re-type the new password as a confirmation.'
+                                    example: asperiores
+                            required:
+                                - password
+                                - password_confirmation
+            security: []
+        parameters:
+            -
+                in: path
+                name: $link
+                description: ''
+                example: neque
+                required: true
+                schema:
+                    type: string
+    /api/profile:
+        get:
+            summary: 'User profile'
+            description: "Get authenticated user profile\n\n@@apiResource App\\Http\\Resources\\UserResource"
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                401:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    message: Unauthenticated.
+                                properties:
+                                    message: { type: string, example: Unauthenticated. }
+            tags:
+                - Endpoints
+            security: []
+    /api/gender:
+        get:
+            summary: 'Get gender'
+            description: 'Select all the genders'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                example:
+                                    - { type: gender, id: '5', attributes: { sex: Female } }
+                                    - { type: gender, id: '', attributes: { sex: Female } }
+            tags:
+                - Gender
+            security: []
+    /api/patient:
+        get:
+            summary: 'Get patients'
+            description: 'Select all the patients'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                example:
+                                    - { type: patient, id: '', attributes: { name: null, dob: null, comments: null }, relationships: { gender: [null], service: [null] } }
+                                    - { type: patient, id: '', attributes: { name: null, dob: null, comments: null }, relationships: { gender: [null], service: [null] } }
+            tags:
+                - Patient
+            security: []
+        post:
+            summary: 'Create patient'
+            description: 'Create new patient record'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: patient
+                                    id: ''
+                                    attributes: { name: null, dob: null, comments: null }
+                                    relationships: { gender: [null], service: [null] }
+                                properties:
+                                    type: { type: string, example: patient }
+                                    id: { type: string, example: '' }
+                                    attributes: { type: object, example: { name: null, dob: null, comments: null } }
+                                    relationships: { type: object, example: { gender: [null], service: [null] } }
+            tags:
+                - Patient
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                gender_id:
+                                    type: integer
+                                    description: 'Gender of the patient.'
+                                    example: 2
+                                service_id:
+                                    type: integer
+                                    description: 'Type of Service.'
+                                    example: 16
+                                name:
+                                    type: string
+                                    description: 'Name of the patient.'
+                                    example: recusandae
+                                dob:
+                                    type: string
+                                    description: 'Patient''s date of birth The value must be a valid date.'
+                                    example: '2021-01-12T09:59:15+0000'
+                                comments:
+                                    type: string
+                                    description: 'General comments about the patient.'
+                                    example: dolor
+                            required:
+                                - gender_id
+                                - service_id
+                                - name
+                                - dob
+                                - comments
+            security: []
+    '/api/patient/{patient}':
+        put:
+            summary: 'Update patient'
+            description: 'Change patient record'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: patient
+                                    id: ''
+                                    attributes: { name: null, dob: null, comments: null }
+                                    relationships: { gender: [null], service: [null] }
+                                properties:
+                                    type: { type: string, example: patient }
+                                    id: { type: string, example: '' }
+                                    attributes: { type: object, example: { name: null, dob: null, comments: null } }
+                                    relationships: { type: object, example: { gender: [null], service: [null] } }
+            tags:
+                - Patient
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                gender_id:
+                                    type: integer
+                                    description: 'Gender of the patient.'
+                                    example: 3
+                                service_id:
+                                    type: integer
+                                    description: 'Type of Service.'
+                                    example: 11
+                                name:
+                                    type: string
+                                    description: 'Name of the patient.'
+                                    example: vitae
+                                dob:
+                                    type: string
+                                    description: 'Patient''s date of birth The value must be a valid date.'
+                                    example: '2021-01-12T09:59:15+0000'
+                                comments:
+                                    type: string
+                                    description: 'General comments about the patient.'
+                                    example: minus
+                            required:
+                                - gender_id
+                                - service_id
+                                - name
+                                - dob
+                                - comments
+            security: []
+        delete:
+            summary: 'Delete patient'
+            description: 'Remove patient record'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: patient
+                                    id: ''
+                                    attributes: { name: null, dob: null, comments: null }
+                                    relationships: { gender: [null], service: [null] }
+                                properties:
+                                    type: { type: string, example: patient }
+                                    id: { type: string, example: '' }
+                                    attributes: { type: object, example: { name: null, dob: null, comments: null } }
+                                    relationships: { type: object, example: { gender: [null], service: [null] } }
+            tags:
+                - Patient
+            security: []
+        parameters:
+            -
+                in: path
+                name: patient
+                description: ''
+                example: sit
+                required: true
+                schema:
+                    type: string
+    /api/service:
+        get:
+            summary: 'Get all services'
+            description: 'Select all the services'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                example:
+                                    - { type: service, id: '', attributes: { sex: Outpatient } }
+                                    - { type: service, id: '', attributes: { sex: Outpatient } }
+            tags:
+                - Service
+            security: []

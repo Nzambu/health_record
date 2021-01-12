@@ -1,0 +1,160 @@
+<template>
+  <v-row>
+    <v-col
+      cols="8"
+      sm="6"
+      md="4"
+      lg="4"
+      xl="4"
+    >
+    <!-- <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="290"
+    > -->
+    <v-menu
+        bottom
+        offset-y
+        class="pb-1"       
+      >
+      <!--  -->
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon
+          v-bind="attrs"
+          v-on="on"
+        >
+        <!-- <v-icon>mdi-dots-vertical</v-icon> -->
+          <v-avatar>
+            <v-img src="https://gitlab.com/uploads/-/system/user/avatar/3883365/avatar.png"></v-img>
+          </v-avatar>
+        </v-btn>
+      </template>
+      <v-card>
+          <div class="pt-5 text-center">
+            <v-avatar>
+              <v-img src="https://gitlab.com/uploads/-/system/user/avatar/3883365/avatar.png"></v-img>
+            </v-avatar>
+          </div>
+            <v-card-text class="text-center pb-0">
+            <b>{{profile.attributes.firstName}} {{profile.attributes.lastName}}</b>
+            </v-card-text>        
+            <v-card-text class="text-center pt-0">
+              <span>{{profile.attributes.email}}</span>
+            </v-card-text>
+            <div class="text-center py-5">
+              <v-btn
+                class="text-capitalize"
+                light
+              >
+                Manage Account
+              </v-btn>
+            </div>
+            <v-divider></v-divider>
+            <div class="text-center py-5">
+              <v-btn
+                class="text-capitalize"
+                light
+                @click="signOut"
+              >
+                Sign Out
+              </v-btn>
+            </div>
+            <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="dialog = false"
+            class="text-capitalize"
+          >
+            Privacy Policy
+          </v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="dialog = false"
+            class="text-capitalize"
+          >
+            Terms of Service
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-menu>
+    <!-- </v-dialog> -->
+    </v-col>
+  </v-row>
+</template>
+<script>
+  export default {
+    name : 'Dialog',
+    data () {
+      return {
+        dialog: false,
+        user: {
+          attributes : {
+            fullName : 'Patrick Nzambu',
+            email : 'patrick@gmail.com'
+          }
+        }
+      }
+    },
+    created()  {
+        this.$nextTick(() => { 
+          this.getUserProfile()
+        })
+    },
+    computed: {
+      profile() {
+        let data = this.$store.state.auth.profile ?? null
+        console.log(data)
+        return data
+      }
+    },
+    methods : {
+
+      /**
+       * Load user profile
+       */
+      getUserProfile() {
+        this.$store.dispatch('auth/profile').then(
+        response => {
+          let data = response
+
+          /**
+           * Profile data retrieved successfully
+           */
+          if(data.status === 200) {
+            console.log(data.data)
+          }
+
+          /**
+           * User token has expired
+           */
+          if(data.status == 401) {
+            /**
+             * TODO 
+             * logout user
+             */
+          }
+        },
+        error => {
+          console.log(error.response)
+        })
+      },
+      
+      /**
+       * Log out or Sign out
+       */
+      signOut() {
+        this.$store.dispatch('auth/logout').then(
+        response => {
+          console.log(response)
+        },
+        error => {
+          console.log(error.response)
+        })
+      }
+    }
+  }
+</script>

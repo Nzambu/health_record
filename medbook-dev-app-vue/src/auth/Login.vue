@@ -279,7 +279,7 @@ export default {
                         // Redirect to the requested link or profile
                         let path = this.$route.query.from
                         if(path === '/') {
-                            this.$router.push('/profile')
+                            this.$router.push('/patient')
                         } else {
                             this.$router.push(path || '/patient')
                         }

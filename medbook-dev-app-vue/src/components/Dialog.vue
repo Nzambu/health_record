@@ -107,7 +107,6 @@
     computed: {
       profile() {
         let data = this.$store.state.auth.profile ?? null
-        console.log(data)
         return data
       }
     },

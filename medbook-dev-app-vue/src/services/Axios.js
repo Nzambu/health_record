@@ -16,12 +16,12 @@ import axios from 'axios'
     });
 
     Axios.interceptors.response.use((response) => {
-        console.log("response" + response.status)
+        // console.log("response " + response.status)
         
         return response;
     }, (errors) => {
         let error = errors.response
-        console.log(error.data)
+        
         if(error.status === 401) {
             // console.log("Login again")
             sessionStorage.clear()

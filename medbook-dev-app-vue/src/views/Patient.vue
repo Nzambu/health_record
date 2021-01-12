@@ -83,6 +83,34 @@
                       required
                   ></v-text-field>
                 </validation-provider>
+                <v-menu
+                    v-model="menu1"
+                    :close-on-content-click="false"
+                    max-width="290"
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                        <validation-provider
+                            v-slot="{errors}"
+                            name="Date of Birth"
+                            rules="required"
+                        >
+                            <v-text-field
+                                :value="computedDateFormattedMomentjs"
+                                :error-messages="errors"
+                                clearable
+                                label="Date Of Birth"
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                                @click:clear="date = null"
+                            ></v-text-field>
+                        </validation-provider>
+                    </template>
+                    <v-date-picker
+                        v-model="patient.dob"
+                        @change="menu1 = false"
+                    ></v-date-picker>
+                </v-menu>
                 <validation-provider
                   v-slot="{errors}"
                   name="Gender"
@@ -144,7 +172,11 @@
     </v-container>
 </template>
 <script>
+
 import Patient from '../models/Patient';
+import moment from 'moment'
+import { format, parseISO } from 'date-fns'
+
 export default {
     name : 'Patient',
     data() {
@@ -166,20 +198,43 @@ export default {
                 {
                     text: 'Gender',
                     align: 'left',
-                    value: 'relationships.gender.data',
+                    value: 'relationships.gender[0].attributes.sex',
                 },
                 {
                     text: 'Type Of Service',
                     align: 'left',
-                    value: 'relationships.service.data',
+                    value: 'relationships.service[0].attributes.service',
                 },
                 {
                     text: 'General Comments',
                     align: 'left',
                     value: 'attributes.comments',
                 },
-            ]
+            ],
+            date: format(parseISO(new Date().toISOString()), 'yyyy-MM-dd'),
+            menu1: false,
+            menu2: false,
         }    
+    },
+    computed : {
+        patientList() {
+            return this.$store.state.patient.list ?? null
+        },
+
+        /**
+         * Process the dates
+         */
+        computedDateFormattedMomentjs () {
+            return this.date ? moment(this.date).format('dddd, MMMM Do YYYY') : ''
+        },
+        computedDateFormattedDatefns () {
+            return this.date ? format(this.date, 'EEEE, MMMM do yyyy') : ''
+        },
+    },
+    created() {
+        this.$nextTick(() => {
+            this.loadPatientList();
+        });
     },
     methods : {
         /**
@@ -193,9 +248,31 @@ export default {
         /**
          * Save new patient
          */
-        handleSaveNewPatient()
+        async handleSaveNewPatient()
         {
-            this.$refs.patientObserve.validate();
+            console.log(this.patient)
+            // await this.$refs.patientObserver.validate();
+            // this.$store.dispatch('patient/savePatient', this.patient).then(
+            //     response => {
+            //         let data = response
+            //         console.log(data)
+            //     }
+            // )
+        },
+
+        /**
+         * Load all patients
+         */
+        loadPatientList()
+        {
+            this.$store.dispatch('patient/getList').then(
+                records => {
+                    if(records)
+                    {
+                        return records
+                    }
+                }
+            )
         }
     }
 }

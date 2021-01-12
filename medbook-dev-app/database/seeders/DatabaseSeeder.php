@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -24,6 +25,23 @@ class DatabaseSeeder extends Seeder
         DB::table('tbl_gender')->insert([
             ['sex' => 'Female'],
             ['sex' => 'Male']
+        ]);
+
+        DB::table('tbl_patient')->insert([
+            [
+                'name' => 'Kevin Brown',
+                'dob' => Carbon::createFromDate('1993', '01', '15'),
+                'gender_id' => 2,
+                'service_id' => 1,
+                'comments' => 'First Time'
+            ],
+            [
+                'name' => 'Leah Gitonga',
+                'dob' => Carbon::createFromDate('1989', '07', '26'),
+                'gender_id' => 1,
+                'service_id' => 2,
+                'comments' => 'Not Feeling Well'
+            ],
         ]);
     }
 }

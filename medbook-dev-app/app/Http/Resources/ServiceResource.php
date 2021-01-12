@@ -18,7 +18,7 @@ class ServiceResource extends JsonResource
             "type" => 'service',
             'id' => (string)$this->srv_id,
             'attributes' => [
-                'sex' => $this->service
+                'service' => $this->service
             ]
         ];
     }

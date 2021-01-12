@@ -48,7 +48,7 @@ export default {
       }, 
     },
     created()  {
-      console.log(this.$route.meta.name);
+      // console.log(this.$route.meta.name);
       this.$nextTick(() => {
         
       })

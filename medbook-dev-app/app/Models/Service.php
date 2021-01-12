@@ -19,6 +19,9 @@ class Service extends Model
      */
     protected $primaryKey = "srv_id";
 
+    /**
+     * Service has many patients
+     */
     public function patient()
     {
         return $this->hasMany(

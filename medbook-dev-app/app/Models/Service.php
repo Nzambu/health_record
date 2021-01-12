@@ -18,4 +18,13 @@ class Service extends Model
      * @var string $primaryKey Primary key
      */
     protected $primaryKey = "srv_id";
+
+    public function patient()
+    {
+        return $this->hasMany(
+            Patient::class,
+            'service_id',
+            'srv_id'
+        );
+    }
 }

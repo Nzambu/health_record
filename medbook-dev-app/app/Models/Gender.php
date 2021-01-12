@@ -18,4 +18,16 @@ class Gender extends Model
      * @var string $primaryKey Primary key
      */
     protected $primaryKey = "gnd_id";
+
+    /**
+     * Gender has many patients
+     */
+    public function patient()
+    {
+        return $this->hasMany(
+            Patient::class,
+            'gender_id',
+            'gnd_id'
+        );
+    }
 }

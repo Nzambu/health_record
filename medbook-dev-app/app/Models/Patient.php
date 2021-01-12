@@ -30,4 +30,27 @@ class Patient extends Model
         "comments"
     ];
 
+    /**
+     * Patient belongs to gender
+     */
+    public function gender()
+    {
+        return $this->belongsTo(
+            Gender::class,
+            'gender_id',
+            'gnd_id'
+        );
+    }
+    
+    /**
+     * Patient belongs to service
+     */
+    public function service()
+    {
+        return $this->belongsTo(
+            Service::class,
+            'service_id',
+            'srv_id'
+        );
+    }
 }

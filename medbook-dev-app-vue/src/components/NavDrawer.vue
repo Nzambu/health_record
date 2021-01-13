@@ -17,12 +17,12 @@
             </v-list-item-icon>
             <v-list-item-title class="light-blue--text">Patients</v-list-item-title>
           </v-list-item>
-          <v-list-item link to='/profile'>
+          <!-- <v-list-item link to='/profile'>
             <v-list-item-icon>
               <v-icon class="light-blue--text">mdi-face</v-icon>
             </v-list-item-icon>
             <v-list-item-title class="light-blue--text">Profile</v-list-item-title>
-          </v-list-item>
+          </v-list-item> -->
         </v-list>
     </v-navigation-drawer>
 </template>

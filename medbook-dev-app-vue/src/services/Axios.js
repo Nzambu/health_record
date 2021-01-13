@@ -17,14 +17,23 @@ import axios from 'axios'
 
     Axios.interceptors.response.use((response) => {
         // console.log("response " + response.status)
-        
         return response;
     }, (errors) => {
         let error = errors.response
-        
         if(error.status === 401) {
-            // console.log("Login again")
-            sessionStorage.clear()
+            /**
+             * unauthorized user is logged out and redirected to the same page upon login
+             * 
+             * Clear expired token
+             */
+            sessionStorage.removeItem('token')
+
+            // Get current pathname
+            let redirectTo = window.location.pathname
+
+            // Redirect to the pathname
+            self.location = redirectTo
+            
         }
         return error
         // if (error.response && error.response.data) {

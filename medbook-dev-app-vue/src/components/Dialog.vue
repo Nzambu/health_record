@@ -18,10 +18,10 @@
         class="pb-1"       
       >
       <!--  -->
-      <template v-slot:activator="{ on, attrs }">
+      <template v-slot:activator="{ on, attrs }" >
         <v-btn icon
           v-bind="attrs"
-          v-on="on"
+          v-on="on"          
         >
         <!-- <v-icon>mdi-dots-vertical</v-icon> -->
           <v-avatar>
@@ -42,17 +42,20 @@
               <span>{{profile.attributes.email}}</span>
             </v-card-text>
             <div class="text-center py-5">
+              <!-- Redirect the user to the profile -->
               <v-btn
-                class="text-capitalize"
+                class="blue white--text text-capitalize"
                 light
+                @click="$router.push('profile')"
               >
                 Manage Account
               </v-btn>
+              <!-- End -->
             </div>
             <v-divider></v-divider>
             <div class="text-center py-5">
               <v-btn
-                class="text-capitalize"
+                class="red white--text text-capitalize"
                 light
                 @click="signOut"
               >
@@ -126,20 +129,14 @@
           if(data.status === 200) {
             console.log(data.data)
           }
-
-          /**
-           * User token has expired
-           */
-          if(data.status == 401) {
-            /**
-             * TODO 
-             * logout user
-             */
-          }
         },
         error => {
           console.log(error.response)
         })
+      },
+
+      gotToUSerProfile() {
+        window.location.replace='/profile'
       },
       
       /**

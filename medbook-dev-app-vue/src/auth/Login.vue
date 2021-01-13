@@ -308,8 +308,12 @@ export default {
                     }
                 }
                 },
-                (error) => {
-                    console.log(error)
+                (failed) => {
+                    let message = failed.messages                  
+                    let error =  []
+                    error.push([message])
+                    this.errors = error
+                    this.snackbar = true
                 }
             )
         },
@@ -318,21 +322,28 @@ export default {
          * Register new user
          */
         async handleRegistration() {
-            const invalid = await this.$refs.registerObserver.validate();
-            if(invalid) {
-                console.log()
-            }
-
+            await this.$refs.registerObserver.validate(
+                passValidation => {
+                    if(passValidation === true)
+                    {
+                        console.log(passValidation)
+                    }
+                }
+            );
         },
 
         /**
          * Send reset password email
          */
         async handleResetPassword() {
-            const invalid = await this.$refs.forgotPasswordObserver.validate();
-            if(invalid) {
-                console.log()
-            }
+            await this.$refs.forgotPasswordObserver.validate(
+                passValidation => {
+                    if(passValidation === true)
+                    {
+                        console.log(passValidation)
+                    }
+                }
+            );
         }
     }
 }

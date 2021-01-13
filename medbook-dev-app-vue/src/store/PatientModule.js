@@ -3,6 +3,8 @@ import PatientService from '../services/PatientService';
 const initialState = {
     list : null,
     error : null,
+    gender : null,
+    service : null,
 }
 export const patient = {
     namespaced: true,
@@ -83,6 +85,42 @@ export const patient = {
                     return Promise.reject(error);
                 }
             );
+        },
+
+        /**
+         * List all genders
+         */
+        genderList({commit})
+        {
+            return PatientService.genderList({commit}).then(
+                gender => {
+                    let list = gender.data
+                    commit('gender', list);
+                    return Promise.resolve(list)
+                },
+                error => {
+                    commit('fail');
+                    return Promise.reject(error);
+                }
+            );
+        },
+
+        /**
+         * List all service
+         */
+        serviceList({commit})
+        {
+            return PatientService.serviceList({commit}).then(
+                service => {
+                    let list = service.data
+                    commit('service', list);
+                    return Promise.resolve(list)
+                },
+                error => {
+                    commit('fail');
+                    return Promise.reject(error);
+                }
+            )
         }
     },
     mutations: {
@@ -100,6 +138,12 @@ export const patient = {
         },
         delete(state, patientID) {
             state.list = state.list.filter((patients) => patients.id !== patientID)
+        },
+        gender(state, genders) {
+            state.gender = genders
+        },
+        service(state, services) {
+            state.service = services
         },
         fail(state, error) {
             state.error = error

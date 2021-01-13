@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../auth/Login.vue'
 import Main from '../views/Layouts/Main.vue';
+import NProgress from 'nprogress'
 
 Vue.use(VueRouter)
 
@@ -34,7 +35,7 @@ const routes = [
         // Lazy-loaded only when router is visited
         component: () => import(/* webpackChunkName: "profile" */'../views/Patient.vue'),
         meta : {
-          name : 'Patient'
+          name : 'Patient Health Record'
         }
       },
     ]
@@ -46,6 +47,22 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+
+router.beforeResolve((to, from, next) => {
+  // If this isn't an initial page load.
+  if (to.name) {
+    // Start the route progress bar.
+    NProgress.start()
+  }
+  next()
+})
+
+router.afterEach(() => {
+  // Complete the animation of the route progress bar.
+  NProgress.done()
+})
+
 
 router.beforeEach((to, from, next) => {
   const publicPages = ['/login'];
@@ -69,5 +86,7 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+
 
 export default router

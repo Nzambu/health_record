@@ -48,5 +48,27 @@ class PatientService {
             url : 'patient/'+patientID
         })
     }
+
+    /**
+     * Get gender list
+     */
+    genderList()
+    {
+        return Axios({
+            method : 'GET',
+            url : 'gender'
+        })
+    }
+
+    /**
+     * Get service list
+     */
+    serviceList()
+    {
+        return Axios({
+            method : 'GET',
+            url : 'service'
+        })
+    }
 }
 export default new PatientService;

@@ -19,11 +19,8 @@ class AuthService {
         // Axios({
         //     method: 'GET',
         //     url: 'auth/logout',
-        // }).then(
-        //     response => {
-        //         console.log(response)
-        //     }
-        // )
+        // })
+        sessionStorage.removeItem('vuex')
         sessionStorage.removeItem('token')
         window.location.replace('/login')
     }

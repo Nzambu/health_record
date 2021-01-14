@@ -35,10 +35,10 @@ class JWTRequest extends FormRequest
      * @return array
      */
     public function messages(){
-    return [
-        'email.exists' => 'The email is incorrect or invalid',
-    ];
-}
+        return [
+            'email.exists' => 'The email is incorrect or invalid',
+        ];
+    }
 
     /**
      * Documentation

@@ -24,7 +24,18 @@ class ForgotPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            "email" => "required|string|exists:users,email"            
+            "email" => "required|email|exists:users,email"            
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages(){
+        return [
+            'email.exists' => 'A user with the email does not exist',
         ];
     }
 

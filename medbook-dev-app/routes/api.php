@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth:api', 'as' => 'auth'], function ()
     |
     */
     Route::get('profile', ['App\Http\Controllers\UserController', 'profile']);
+    Route::post('update_profile', ['App\Http\Controllers\UserController', 'updateProfile']);
 
     /*
     |--------------------------------------------------------------------------

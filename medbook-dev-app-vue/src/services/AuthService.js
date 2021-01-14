@@ -15,6 +15,19 @@ class AuthService {
         })
     }
 
+    /**
+     * Update user profile
+     * 
+     * @param {*} data new data
+     */
+    updateProfile = (data) => {
+        return Axios({
+            method : 'POST',
+            url : 'update_profile',
+            data : data
+        })
+    }
+
     logout() {
         // Axios({
         //     method: 'GET',

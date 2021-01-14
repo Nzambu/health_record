@@ -107,6 +107,7 @@ class JWTController extends Controller
      */
     public function forgotPassword(ForgotPasswordRequest $request)
     {
+        return $request;
         $email = $request->email;
         $user = User::where('email', $email)
                     ->update([

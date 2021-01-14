@@ -3,180 +3,205 @@
         <v-card>
             <v-card-title class="px-10 py-0">
                 <v-row>
-                <v-col lg="3">
-                <v-list-item two-line>
-                    <v-list-item-content>
-                        <v-list-item-title>Patient Health Records</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-                </v-col>
-                <v-col lg="7">
-                    <v-text-field v-if="showPatients"
-                        v-model="searchPatient"
-                        append-icon="mdi-magnify"
-                        label="Search"
-                        single-line
-                        hide-details
-                    ></v-text-field>
-                </v-col>
-                <v-col lg="2">
-                    <v-row>
-                    <v-spacer></v-spacer>            
-                    <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                        class="blue white--text text-capitalize"
-                        @click="toggleAddPatient"
-                        v-bind="attrs"
-                        v-on="on"
-                        >Patient
-                        <v-icon v-if="showPatients"
-                            class="white--text"                
-                        >mdi-plus</v-icon>
-                        <v-icon v-if="!showPatients"
-                            class="white--text"                
-                        >mdi-close</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>Add Patient</span>
-                    </v-tooltip> 
-                    </v-row>            
-                </v-col>
+                    <v-col lg="3">
+                        <v-list-item two-line>
+                            <v-list-item-content>
+                                <v-list-item-title>Patient Health Records</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-col>
+                    <v-col lg="7">
+                        <v-text-field
+                            v-model="searchPatient"
+                            append-icon="mdi-magnify"
+                            label="Search"
+                            single-line
+                            hide-details
+                        ></v-text-field>
+                    </v-col>
+                    <v-col lg="2" class="text-right">
+                        <v-dialog
+                            v-model="addPatient"
+                            persistent
+                            max-width="600px"
+                        >
+                            <template v-slot:activator="{ on, attrs }">
+                                <div 
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                <v-tooltip 
+                                    bottom            
+                                >
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            class="blue white--text text-capitalize"
+                                            @click="toggleAddPatient"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                        >Patient
+                                            <v-icon
+                                                class="white--text"                
+                                            >mdi-plus</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Add Patient</span>
+                                </v-tooltip>
+                                </div>
+                                </template>
+                                <v-card>
+                                <v-card-title class="text-center">
+                                    <span class="headline">Patient Health Record</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container>
+                                        <validation-observer
+                                            ref="patientObserver"
+                                        >
+                                            <v-form>              
+                                                <validation-provider
+                                                v-slot="{errors}"
+                                                name="Name"
+                                                rules="required"
+                                                >
+                                                <v-text-field
+                                                    v-model="patient.name"
+                                                    :error-messages="errors"
+                                                    label="Name"
+                                                    type="text"
+                                                    required
+                                                ></v-text-field>
+                                                </validation-provider>
+                                                <v-menu
+                                                    v-model="menu1"
+                                                    :close-on-content-click="false"
+                                                    max-width="290"
+                                                >
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <validation-provider
+                                                            v-slot="{errors}"
+                                                            name="Date of Birth"
+                                                            rules="required"
+                                                        >
+                                                            <v-text-field
+                                                                :value="computedDateFormattedMomentjs"
+                                                                :error-messages="errors"
+                                                                clearable
+                                                                label="Date Of Birth"
+                                                                readonly
+                                                                v-bind="attrs"
+                                                                v-on="on"
+                                                                @click:clear="date = null"
+                                                            ></v-text-field>
+                                                        </validation-provider>
+                                                    </template>
+                                                    <v-date-picker
+                                                        v-model="date"
+                                                        @change="menu1 = false"
+                                                    ></v-date-picker>
+                                                </v-menu>
+                                                <validation-provider
+                                                v-slot="{errors}"
+                                                name="Gender"
+                                                rules="required"
+                                                >
+                                                <v-select
+                                                    v-model="patient.gender_id"
+                                                    :error-messages="errors"
+                                                    :items="genderList"
+                                                    item-text="attributes.sex"
+                                                    item-value="id"
+                                                    label="Gender"
+                                                    persistent-hint                    
+                                                    single-line
+                                                ></v-select>
+                                                </validation-provider>
+                                                <validation-provider
+                                                v-slot="{errors}"
+                                                name="Type Of Service"
+                                                rules="required"
+                                                >
+                                                <v-select
+                                                    v-model="patient.service_id"
+                                                    :error-messages="errors"
+                                                    :items="serviceList"
+                                                    item-text="attributes.service"
+                                                    item-value="id"
+                                                    label="Type of Service"
+                                                    persistent-hint
+                                                    single-line
+                                                ></v-select>
+                                                </validation-provider>
+                                                <validation-provider
+                                                v-slot="{errors}"
+                                                name="General Comments"
+                                                rules="required" 
+                                                >
+                                                    <v-textarea
+                                                        v-model="patient.comments"
+                                                        :error-messages="errors"
+                                                        name="General Comments"
+                                                        label="General Comments"
+                                                        value=""
+                                                        hint=""
+                                                        counter="255"
+                                                        ></v-textarea>
+                                                </validation-provider>
+                                                <!-- <v-row class="pt-5">
+                                                    <v-col lg="12">
+                                                        <v-btn 
+                                                            block 
+                                                            class="success text-capitalize"
+                                                            @click="handleSaveNewPatient"                                    
+                                                        >Save Patient</v-btn>
+                                                    </v-col>
+                                                </v-row>               -->
+                                            </v-form>
+                                        </validation-observer>
+                                    </v-container>
+                                </v-card-text>
+                                <v-card-actions class="px-10 pb-5">
+                                    <v-row>
+                                        <v-spacer></v-spacer>            
+                                        <v-btn
+                                            color="blue darken-1"
+                                            text
+                                            class="default text-capitalize"
+                                            @click="toggleAddPatient"
+                                        >
+                                        Close
+                                        </v-btn>
+                                        <v-btn 
+                                            class="success text-capitalize"
+                                            @click="handleSaveNewPatient"                                    
+                                        >Save Patient</v-btn>
+                                    </v-row>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                        
+                        <!-- End of Dialog/Modal -->
+
+                    </v-col>
                 </v-row>
             </v-card-title>
             <v-divider></v-divider>
             <v-row class="py-10 px-10">
-                <v-col v-if="showPatients">
+                <v-col>
                     <v-data-table
                         :headers="tableHeaders"
                         :items="patientList"
                         :search="searchPatient"
                         :items-per-page="10"
                         :page.sync="page"
-                        hide-default-footer
                         class="elevation-1"
                         @page-count="pageCount = $event" 
+                        height="600px"
                     ></v-data-table>
-                    <v-pagination
-                            v-model="page"
-                            :length="pageCount"
-                        ></v-pagination>
-                </v-col>
-                <v-col v-if="!showPatients"
-                    offset-lg="3"
-                    lg="6"
-                    offset-md="3"
-                    md="6"
-                >
-
-                <!-- Patient registration form -->
-
-                    <validation-observer
-                        ref="patientObserver"
-                    >
-                        <v-form>              
-                            <validation-provider
-                            v-slot="{errors}"
-                            name="Name"
-                            rules="required"
-                            >
-                            <v-text-field
-                                v-model="patient.name"
-                                :error-messages="errors"
-                                label="Name"
-                                type="text"
-                                required
-                            ></v-text-field>
-                            </validation-provider>
-                            <v-menu
-                                v-model="menu1"
-                                :close-on-content-click="false"
-                                max-width="290"
-                            >
-                                <template v-slot:activator="{ on, attrs }">
-                                    <validation-provider
-                                        v-slot="{errors}"
-                                        name="Date of Birth"
-                                        rules="required"
-                                    >
-                                        <v-text-field
-                                            :value="computedDateFormattedMomentjs"
-                                            :error-messages="errors"
-                                            clearable
-                                            label="Date Of Birth"
-                                            readonly
-                                            v-bind="attrs"
-                                            v-on="on"
-                                            @click:clear="date = null"
-                                        ></v-text-field>
-                                    </validation-provider>
-                                </template>
-                                <v-date-picker
-                                    v-model="date"
-                                    @change="menu1 = false"
-                                ></v-date-picker>
-                            </v-menu>
-                            <validation-provider
-                            v-slot="{errors}"
-                            name="Gender"
-                            rules="required"
-                            >
-                            <v-select
-                                v-model="patient.gender_id"
-                                :error-messages="errors"
-                                :items="genderList"
-                                item-text="attributes.sex"
-                                item-value="id"
-                                label="Gender"
-                                persistent-hint                    
-                                single-line
-                            ></v-select>
-                            </validation-provider>
-                            <validation-provider
-                            v-slot="{errors}"
-                            name="Type Of Service"
-                            rules="required"
-                            >
-                            <v-select
-                                v-model="patient.service_id"
-                                :error-messages="errors"
-                                :items="serviceList"
-                                item-text="attributes.service"
-                                item-value="id"
-                                label="Type of Service"
-                                persistent-hint
-                                single-line
-                            ></v-select>
-                            </validation-provider>
-                            <validation-provider
-                            v-slot="{errors}"
-                            name="General Comments"
-                            rules="required" 
-                            >
-                                <v-textarea
-                                    v-model="patient.comments"
-                                    :error-messages="errors"
-                                    name="General Comments"
-                                    label="General Comments"
-                                    value=""
-                                    hint=""
-                                    counter="255"
-                                    ></v-textarea>
-                            </validation-provider>
-                            <v-row class="pt-5">
-                            <v-col lg="12">
-                                <v-btn 
-                                    block 
-                                    class="success text-capitalize"
-                                    @click="handleSaveNewPatient"                                    
-                                >Save Patient</v-btn>
-                            </v-col>
-                            </v-row>              
-                        </v-form>
-                    </validation-observer>
-
-                    <!-- End of patient registration form -->
-
+                    <!-- <v-pagination
+                        v-model="page"
+                        :length="pageCount"
+                    ></v-pagination> -->
                 </v-col>
             </v-row>
         </v-card>
@@ -193,7 +218,8 @@ export default {
     data() {
         return {
             patient : new Patient(),
-            showPatients : true,
+            showPatients : false,
+            addPatient : false,
             searchPatient : '',
             patientList : [],
             tableHeaders : [
@@ -277,7 +303,8 @@ export default {
          */
         toggleAddPatient()
         {
-            this.showPatients = !this.showPatients
+            // this.showPatients = !this.showPatients
+            this.addPatient = false
         },
 
         /**
@@ -286,23 +313,27 @@ export default {
         async handleSaveNewPatient()
         {
             // Validate all the fields
-            await this.$refs.patientObserver.validate().then(
+            await this.$refs.patientObserver.validate()
+            .then(
                 success => {
                     // validation returns true
                     if(success === true) {
                         // set patient date of birth
                         this.patient.dob = this.date;
                         // pass data to patient module
-                        this.$store.dispatch('patient/savePatient', this.patient).then(
+                        this.$store.dispatch('patient/savePatient', this.patient)
+                        .then(
                             newRecord => {
                                 let data = newRecord
                                 console.log(data)
                             }
                         );
+                        // close modal
+                        this.toggleAddPatient()
                     }
                 }
             );
-            this.showPatients = !this.showPatients
+            
         },
 
         /**
@@ -314,6 +345,9 @@ export default {
                 records => {
                     if(records)
                     {
+                        /**
+                         * Assign the list to a custom model - loads data without refreshing to get the data
+                         */
                         this.patientList = this.$store.state.patient.list
                     }
                 }

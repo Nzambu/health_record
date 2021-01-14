@@ -128,7 +128,10 @@ export const patient = {
             state.list = patientList
         },
         save(state, newPatient) {
-            state.list.unshift(newPatient)
+            // Add at the top of the array
+            // state.list.unshift(newPatient)
+            // Add at the end of the array
+            state.list.push(newPatient)
         },
         update(state, updatedPatient) {
             let patientIndex = state.list.findIndex( patient => patient.id === updatedPatient.id)

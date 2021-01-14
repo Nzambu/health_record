@@ -211,6 +211,7 @@
 <script>
 import Auth from '../models/Auth';
 import Axios from '../services/Axios';
+import ForgotPasswordService from '../services/ForgotPasswordService';
 export default {
     name : 'Login',    
     data() {
@@ -290,10 +291,8 @@ export default {
                      * User does not exist or its invalid
                      */
                     if(response.response.data.errors) {
-                        this.snackbar = true;
                         let error = data.response.data.errors
-                        this.errors = error;
-                        console.log(error)
+                        return this.handleErrorsFromAPI(error)
                     }
                     
                     /**
@@ -303,8 +302,7 @@ export default {
                         let message = data.response.data.error.detail                    
                         let error =  []
                         error.push([message])
-                        this.errors = error
-                        this.snackbar = true
+                        return this.handleErrorsFromAPI(error)
                     }
                 }
                 },
@@ -312,8 +310,7 @@ export default {
                     let message = failed.messages                  
                     let error =  []
                     error.push([message])
-                    this.errors = error
-                    this.snackbar = true
+                    return this.handleErrorsFromAPI(error)
                 }
             )
         },
@@ -322,7 +319,7 @@ export default {
          * Register new user
          */
         async handleRegistration() {
-            await this.$refs.registerObserver.validate(
+            await this.$refs.registerObserver.validate().then(
                 passValidation => {
                     if(passValidation === true)
                     {
@@ -335,15 +332,38 @@ export default {
         /**
          * Send reset password email
          */
-        async handleResetPassword() {
-            await this.$refs.forgotPasswordObserver.validate(
-                passValidation => {
-                    if(passValidation === true)
+        handleResetPassword() {
+            this.$refs.forgotPasswordObserver.validate().then(
+                success => {
+                    if(success === true)
                     {
-                        console.log(passValidation)
+                        // this.$store.dispatch('auth/sendResetPasswordEmail', this.user)
+                        return ForgotPasswordService.sendResetPasswordEmail(this.user)
+                        .then(
+                            feedback => {
+                                let status = feedback.status
+                                if(status === 200)
+                                {
+                                    console.log(feedback)
+                                }
+                                if(status === 422) {
+                                    let errors = feedback.data.errors
+                                    return this.handleErrorsFromAPI(errors)
+                                }
+                            }
+                        )
                     }
                 }
             );
+        },
+
+        /**
+         * Render errors from the API
+         */
+        handleErrorsFromAPI(error)
+        {
+            this.errors = error
+            this.snackbar = true
         }
     }
 }

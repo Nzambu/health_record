@@ -1,130 +1,136 @@
 <template>
   <v-container>
     <v-card>
-        <v-card-title class="px-10 py-0">
-          <v-row>
-            <v-col lg="6">            
-              <v-list-item one-line>
-                  <v-list-item-content>
-                      <v-list-item-title>User Profile</v-list-item-title>
-                  </v-list-item-content>
-              </v-list-item>            
-            </v-col>
-            <v-col lg="6">
-              <v-row>
-                <v-spacer></v-spacer>
-                <v-tooltip bottom>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  class="blue white--text text-capitalize"
-                  @click="toggleEditProfile"
-                  v-bind="attrs"
-                  v-on="on"
-                >Profile
-                  <v-icon v-if="showProfile"
-                    class="white--text"                
-                  >mdi-pencil</v-icon>
-                  <v-icon v-if="!showProfile"
-                    class="white--text"                
-                  >mdi-close</v-icon>
-                </v-btn>
-              </template>
-              <span>Edit Profile</span>
-            </v-tooltip>
-              </v-row>            
-            </v-col>
-          </v-row> 
-        </v-card-title>
-        <v-divider></v-divider>
+      <v-card-title class="px-10 py-0">
         <v-row>
-          <v-col lg="12" class="text-center">
-            <v-avatar size="200">
-              <v-img src="https://gitlab.com/uploads/-/system/user/avatar/3883365/avatar.png"></v-img>
-            </v-avatar>
+          <v-col lg="6">            
+            <v-list-item one-line>
+                <v-list-item-content>
+                    <v-list-item-title>User Profile</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>            
           </v-col>
-        </v-row>          
-        <v-row v-if="showProfile">
-          <v-col lg="12" class="text-center">
-            <v-list>
-              <v-list-item two-line>
-                <v-list-item-title>
-                  {{profile.attributes.name}}
-                </v-list-item-title>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-title>
-                  {{profile.attributes.email}}
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
+          <v-col lg="6">
+            <v-row>
+              <v-spacer></v-spacer>
+              <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                class="blue white--text text-capitalize"
+                @click="toggleEditProfile"
+                v-bind="attrs"
+                v-on="on"
+              >Profile
+                <v-icon v-if="showProfile"
+                  class="white--text"                
+                >mdi-pencil</v-icon>
+                <v-icon v-if="!showProfile"
+                  class="white--text"                
+                >mdi-close</v-icon>
+              </v-btn>
+            </template>
+            <span>Edit Profile</span>
+          </v-tooltip>
+            </v-row>            
           </v-col>
         </v-row> 
-        <v-row v-if="!showProfile"
-          class="px-10"
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-row>
+        <v-col lg="12" class="text-center">
+          <v-avatar size="200">
+            <v-img src="https://gitlab.com/uploads/-/system/user/avatar/3883365/avatar.png"></v-img>
+          </v-avatar>
+        </v-col>
+      </v-row>          
+      <v-row v-if="showProfile">
+        <v-col lg="12" class="text-center">
+          <v-list>
+            <v-list-item two-line>
+              <v-list-item-title>
+                {{profile.attributes.name}}
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>
+                {{profile.attributes.email}}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-col>
+      </v-row> 
+      <v-row v-if="!showProfile"
+        class="px-10"
+      >
+        <v-col 
+          lg="6"
+          offset-lg="3"
         >
-          <v-col 
-            lg="6"
-            offset-lg="3"
+
+          <!-- Edit user Profile -->
+
+          <validation-observer
+            ref="profileObserver"
+            v-slot="{}"
           >
             <v-form
                 lazy-validation
             >
-              <validation-observer
-                  ref="profileObserver"
-                  v-slot="{}"
+              <validation-provider
+                v-slot="{errors}"
+                name="First Name"
+                rules="required"
               >
-                <validation-provider
-                  v-slot="{errors}"
-                  name="First Name"
-                  rules="required"
-                >
-                  <v-text-field
-                      v-model="user.firstName"
-                      :error-messages="errors"
-                      label="First Name"
-                      type="text"
-                      required
-                  ></v-text-field>
-                </validation-provider>
-                <validation-provider
-                    v-slot="{errors}"
-                    name="Last Name"
-                    rules="required"
-                >
-                  <v-text-field
-                      v-model="user.lastName"
-                      :error-messages="errors"
-                      label="Last Name"
-                      type="text"
-                      required
-                  ></v-text-field>
-                </validation-provider>
-                <validation-provider
-                  v-slot="{errors}"
-                  name="Sex"
-                  rules="required"
-                >
-                  <v-select
-                    v-model="user.sex"
+                <v-text-field
+                    v-model="user.first_name"
                     :error-messages="errors"
-                    :items="['Undisclosed', 'Female', 'Male']"
-                    label="Sex"
-                    persistent-hint
-                    return-object
-                    single-line
-                  ></v-select>
-                </validation-provider>
-                <v-row class="pt-5">
-                  <v-col lg="12">
-                    <v-btn block
-              
-                      class="success text-capitalize"
-                      @click="handleUpdateProfile"
-                    >Save Changes</v-btn>
-                  </v-col>
-                </v-row>
-              </validation-observer>
-          </v-form>
+                    label="First Name"
+                    type="text"
+                    required
+                ></v-text-field>
+              </validation-provider>
+              <validation-provider
+                  v-slot="{errors}"
+                  name="Last Name"
+                  rules="required"
+              >
+                <v-text-field
+                    v-model="user.last_name"
+                    :error-messages="errors"
+                    label="Last Name"
+                    type="text"
+                    required
+                ></v-text-field>
+              </validation-provider>
+              <!-- <validation-provider
+                v-slot="{errors}"
+                name="Sex"
+                rules="required"
+              >
+                <v-select
+                  v-model="user.sex"
+                  :error-messages="errors"
+                  :items="['Undisclosed', 'Female', 'Male']"
+                  label="Sex"
+                  persistent-hint
+                  return-object
+                  single-line
+                ></v-select>
+              </validation-provider> -->
+              <v-row class="pt-5">
+                <v-col lg="12">
+                  <v-btn block
+            
+                    class="success text-capitalize"
+                    @click="handleUpdateProfile"
+                  >Save Changes</v-btn>
+                </v-col>
+              </v-row>
+            </v-form>
+          </validation-observer>
+
+          <!-- End -->
+
         </v-col>
       </v-row>
     </v-card>
@@ -426,7 +432,7 @@ export default {
   name: 'Profile',
   data() {
     return {
-      user : new Auth('', '', ''),
+      user : new Auth(),
       showProfile : true,
       showEmail : true,
       showPhone : true,
@@ -442,6 +448,13 @@ export default {
     profile() {
       let data = this.$store.state.auth.profile
       return data
+    }
+  },
+  watch : {
+    profile(newProfile, oldProfile) {
+      if(newProfile !== oldProfile) {
+        this.setProfileData()
+      }
     }
   },
   methods : {
@@ -479,10 +492,8 @@ export default {
     setProfileData()
     {
       if(this.showProfile === true) {
-        this.user.firstName = this.profile.attributes.firstName
-        this.user.lastName = this.profile.attributes.lastName
-      } else {
-        this.user = null
+        this.user.first_name = this.profile.attributes.firstName
+        this.user.last_name = this.profile.attributes.lastName
       }
     },
 
@@ -490,7 +501,30 @@ export default {
      * Update user profile
      */
     handleUpdateProfile() {
-      this.$refs.profileObserver.validate();
+      this.$refs.profileObserver.validate()
+      .then(
+        dataIsValid => {
+          if(dataIsValid === true)
+          {
+            this.$store.dispatch('auth/updateProfile', this.user)
+            .then(
+              feedback => {
+                let status = feedback.status
+                console.log(status)
+                switch(status) {
+                  case 200 :
+                     this.toggleEditProfile()
+                    break;
+                  case 422 :
+                    console.log(feedback.data.errors)
+                    break;
+                  default :
+                    console.log('This is default');
+                }
+              }
+            );
+          }
+        });
 
     },
 

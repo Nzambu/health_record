@@ -8,8 +8,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
+use App\Http\Requests\UpdateProfileRequest;
 
 class UserController extends Controller
 {
@@ -26,5 +28,24 @@ class UserController extends Controller
     public function profile() {
         $user = auth()->user();
         return new UserResource($user);
+    }
+
+    /**
+     * Update Profile
+     * 
+     * User can edit the profile data
+     * 
+     * @apiResource App\Http\Resources\UserResource
+     * @apiResourceModel App\Models\User
+     * 
+     * @return object A user profile
+     */
+    public function updateProfile(UpdateProfileRequest $request) {
+        if($user = auth()->user()) {
+            $user = User::find($user->usr_id);
+            $data = $request->only($user->getFillable());
+            $user->fill($data)->update();
+            return new UserResource($user);
+        }
     }
 }

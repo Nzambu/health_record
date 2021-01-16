@@ -42,14 +42,14 @@ fetch(url, {
         "type": "service",
         "id": "",
         "attributes": {
-            "sex": "Outpatient"
+            "service": "Outpatient"
         }
     },
     {
         "type": "service",
         "id": "",
         "attributes": {
-            "sex": "Outpatient"
+            "service": "Outpatient"
         }
     }
 ]

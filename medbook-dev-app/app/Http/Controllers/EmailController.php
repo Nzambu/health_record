@@ -1,4 +1,10 @@
 <?php
+/**
+ * MedBookAfrica Interview
+ * 
+ * @author  Nzambu Nzioki <patricknzambu@gmail.com>
+ * 
+ */
 
 namespace App\Http\Controllers;
 
@@ -7,6 +13,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests\EmailRequest;
 use App\Http\Resources\EmailResource;
 
+/**
+ * @group  User Email
+ *
+ * Gender endpoints
+ * 
+ * @package Controllers
+ */
 class EmailController extends Controller
 {
     /**

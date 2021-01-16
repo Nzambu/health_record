@@ -7,8 +7,6 @@ Gender endpoints
 
 Get authenticated user profile
 
-@@apiResource App\Http\Resources\UserResource
-
 > Example request:
 
 ```bash
@@ -36,11 +34,29 @@ fetch(url, {
 ```
 
 
-> Example response (401):
+> Example response (200):
 
 ```json
 {
-    "message": "Unauthenticated."
+    "type": "user",
+    "id": "",
+    "attributes": {
+        "firstName": "Patrick",
+        "lastName": "Nzioki",
+        "name": "Patrick Nzioki",
+        "email": "patrick@authentication.com"
+    },
+    "relationships": {
+        "email": [
+            []
+        ],
+        "phone": [
+            []
+        ]
+    },
+    "links": {
+        "self": "http:\/\/localhost\/api\/profile"
+    }
 }
 ```
 <div id="execution-results-GETapi-profile" hidden>
@@ -77,7 +93,7 @@ curl -X POST \
     "http://localhost/api/update_profile" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"first_name":"quia","last_name":"qui"}'
+    -d '{"first_name":"ut","last_name":"tempore"}'
 
 ```
 
@@ -92,8 +108,8 @@ let headers = {
 };
 
 let body = {
-    "first_name": "quia",
-    "last_name": "qui"
+    "first_name": "ut",
+    "last_name": "tempore"
 }
 
 fetch(url, {

@@ -40,35 +40,59 @@ fetch(url, {
 [
     {
         "type": "patient",
-        "id": "",
+        "id": "81",
         "attributes": {
-            "name": null,
-            "dob": null,
-            "comments": null
+            "name": "Dr. Clement Dibbert",
+            "dob": "1993-01-15T16:17:21.679086Z",
+            "comments": "First Time"
         },
         "relationships": {
             "gender": [
-                null
+                {
+                    "type": "gender",
+                    "id": "2",
+                    "attributes": {
+                        "sex": "Male"
+                    }
+                }
             ],
             "service": [
-                null
+                {
+                    "type": "service",
+                    "id": "1",
+                    "attributes": {
+                        "service": "Outpatient"
+                    }
+                }
             ]
         }
     },
     {
         "type": "patient",
-        "id": "",
+        "id": "82",
         "attributes": {
-            "name": null,
-            "dob": null,
-            "comments": null
+            "name": "Ervin Parisian",
+            "dob": "1993-01-15T16:17:21.684440Z",
+            "comments": "First Time"
         },
         "relationships": {
             "gender": [
-                null
+                {
+                    "type": "gender",
+                    "id": "2",
+                    "attributes": {
+                        "sex": "Male"
+                    }
+                }
             ],
             "service": [
-                null
+                {
+                    "type": "service",
+                    "id": "1",
+                    "attributes": {
+                        "service": "Outpatient"
+                    }
+                }
             ]
         }
     }
@@ -108,7 +132,7 @@ curl -X POST \
     "http://localhost/api/patient" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"gender_id":2,"service_id":16,"name":"recusandae","dob":"2021-01-12T09:59:15+0000","comments":"dolor"}'
+    -d '{"gender_id":8,"service_id":4,"name":"sed","dob":"2021-01-16T16:17:21+0000","comments":"eum"}'
 
 ```
 
@@ -123,11 +147,11 @@ let headers = {
 };
 
 let body = {
-    "gender_id": 2,
-    "service_id": 16,
-    "name": "recusandae",
-    "dob": "2021-01-12T09:59:15+0000",
-    "comments": "dolor"
+    "gender_id": 8,
+    "service_id": 4,
+    "name": "sed",
+    "dob": "2021-01-16T16:17:21+0000",
+    "comments": "eum"
 }
 
 fetch(url, {
@@ -143,18 +167,30 @@ fetch(url, {
 ```json
 {
     "type": "patient",
-    "id": "",
+    "id": "83",
     "attributes": {
-        "name": null,
-        "dob": null,
-        "comments": null
+        "name": "Saige Gerhold",
+        "dob": "1993-01-15T16:17:21.718348Z",
+        "comments": "First Time"
     },
     "relationships": {
         "gender": [
-            null
+            {
+                "type": "gender",
+                "id": "2",
+                "attributes": {
+                    "sex": "Male"
+                }
+            }
         ],
         "service": [
-            null
+            {
+                "type": "service",
+                "id": "1",
+                "attributes": {
+                    "service": "Outpatient"
+                }
+            }
         ]
     }
 }
@@ -217,16 +253,16 @@ Change patient record
 
 ```bash
 curl -X PUT \
-    "http://localhost/api/patient/sit" \
+    "http://localhost/api/patient/rem" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"gender_id":3,"service_id":11,"name":"vitae","dob":"2021-01-12T09:59:15+0000","comments":"minus"}'
+    -d '{"gender_id":12,"service_id":15,"name":"sint","dob":"2021-01-16T16:17:21+0000","comments":"dolorem"}'
 
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/patient/sit"
+    "http://localhost/api/patient/rem"
 );
 
 let headers = {
@@ -235,11 +271,11 @@ let headers = {
 };
 
 let body = {
-    "gender_id": 3,
-    "service_id": 11,
-    "name": "vitae",
-    "dob": "2021-01-12T09:59:15+0000",
-    "comments": "minus"
+    "gender_id": 12,
+    "service_id": 15,
+    "name": "sint",
+    "dob": "2021-01-16T16:17:21+0000",
+    "comments": "dolorem"
 }
 
 fetch(url, {
@@ -255,18 +291,30 @@ fetch(url, {
 ```json
 {
     "type": "patient",
-    "id": "",
+    "id": "84",
     "attributes": {
-        "name": null,
-        "dob": null,
-        "comments": null
+        "name": "Miss Minnie Runte",
+        "dob": "1993-01-15T16:17:21.746226Z",
+        "comments": "First Time"
     },
     "relationships": {
         "gender": [
-            null
+            {
+                "type": "gender",
+                "id": "2",
+                "attributes": {
+                    "sex": "Male"
+                }
+            }
         ],
         "service": [
-            null
+            {
+                "type": "service",
+                "id": "1",
+                "attributes": {
+                    "service": "Outpatient"
+                }
+            }
         ]
     }
 }
@@ -339,14 +387,14 @@ Remove patient record
 
 ```bash
 curl -X DELETE \
-    "http://localhost/api/patient/perferendis" \
+    "http://localhost/api/patient/aspernatur" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/patient/perferendis"
+    "http://localhost/api/patient/aspernatur"
 );
 
 let headers = {
@@ -367,18 +415,30 @@ fetch(url, {
 ```json
 {
     "type": "patient",
-    "id": "",
+    "id": "85",
     "attributes": {
-        "name": null,
-        "dob": null,
-        "comments": null
+        "name": "Trever Thiel",
+        "dob": "1993-01-15T16:17:21.771843Z",
+        "comments": "First Time"
     },
     "relationships": {
         "gender": [
-            null
+            {
+                "type": "gender",
+                "id": "2",
+                "attributes": {
+                    "sex": "Male"
+                }
+            }
         ],
         "service": [
-            null
+            {
+                "type": "service",
+                "id": "1",
+                "attributes": {
+                    "service": "Outpatient"
+                }
+            }
         ]
     }
 }

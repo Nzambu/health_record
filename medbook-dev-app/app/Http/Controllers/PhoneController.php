@@ -1,4 +1,10 @@
 <?php
+/**
+ * MedBookAfrica Interview
+ * 
+ * @author  Nzambu Nzioki <patricknzambu@gmail.com>
+ * 
+ */
 
 namespace App\Http\Controllers;
 
@@ -7,6 +13,13 @@ use App\Models\Phone;
 use Illuminate\Http\Request;
 use App\Http\Resources\PhoneResource;
 
+/**
+ * @group  User Phone Number
+ *
+ * Gender endpoints
+ * 
+ * @package Controllers
+ */
 class PhoneController extends Controller
 {
     /**

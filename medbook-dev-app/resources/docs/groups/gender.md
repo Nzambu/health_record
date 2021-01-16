@@ -40,7 +40,7 @@ fetch(url, {
 [
     {
         "type": "gender",
-        "id": "5",
+        "id": "",
         "attributes": {
             "sex": "Female"
         }

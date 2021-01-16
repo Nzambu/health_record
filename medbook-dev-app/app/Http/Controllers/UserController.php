@@ -27,7 +27,7 @@ class UserController extends Controller
      * 
      * Get authenticated user profile
      * 
-     * @@apiResource App\Http\Resources\UserResource
+     * @apiResource App\Http\Resources\UserResource
      * @apiResourceModel App\Models\User
      * 
      * @return object A user profile

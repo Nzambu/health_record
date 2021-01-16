@@ -23,6 +23,14 @@ class UserResource extends JsonResource
                 "name" => $this->first_name." ".$this->last_name,
                 "email" => $this->email
             ],
+            'relationships' => [
+                'email' => [
+                    EmailResource::collection($this->emails)
+                ],
+                'phone' => [
+                    PhoneResource::collection($this->phone)
+                ]
+            ],
             "links" => [
                 "self" => $request->fullUrl()
             ]

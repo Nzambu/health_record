@@ -175,13 +175,21 @@
             lg="12"
           >
             <v-list>
-              <v-list-item>
-                <v-list-item-title>
-                  <v-avatar color="blue">
-                    <v-icon class="white--text">mdi-email-outline</v-icon>
-                  </v-avatar>
-                  {{profile.attributes.email}}
-                </v-list-item-title>
+              <v-list-item 
+                two-line 
+                v-for="email in emailList"
+                :key="email.id"                
+              >
+                <v-list-item-content >                  
+                  <v-list-item-title      
+                  >
+                    <v-avatar color="blue" size="40">
+                      <v-icon class="white--text">mdi-phone-outline</v-icon>
+                    </v-avatar>
+                    {{ email.attributes.email }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle v-if="email.attributes.primary">Primary</v-list-item-subtitle>
+                </v-list-item-content>
               </v-list-item>
             </v-list>
           </v-col>
@@ -264,13 +272,21 @@
             lg="12"
           >
             <v-list>
-              <v-list-item>
-                <v-list-item-title>
-                  <v-avatar color="blue">
-                    <v-icon class="white--text">mdi-phone-outline</v-icon>
-                  </v-avatar>
-                  {{profile.attributes.email}}
-                </v-list-item-title>
+              <v-list-item 
+                two-line 
+                v-for="phone in phoneList"
+                :key="phone.id"                
+              >
+                <v-list-item-content >                  
+                  <v-list-item-title      
+                  >
+                    <v-avatar color="blue" size="40">
+                      <v-icon class="white--text">mdi-phone-outline</v-icon>
+                    </v-avatar>
+                    {{ phone.attributes.phone }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle v-if="phone.attributes.primary">Primary</v-list-item-subtitle>
+                </v-list-item-content>
               </v-list-item>
             </v-list>
           </v-col>
@@ -445,10 +461,28 @@ export default {
     })
   },
   computed : {
+
+    /**
+     * Get user profile data
+     */
     profile() {
-      let data = this.$store.state.auth.profile
+      let data = this.$store.state.profile.profile
       return data
-    }
+    },
+
+    /**
+     * List user emails
+     */
+    emailList() {
+      return this.$store.state.profile.emails
+    },
+
+    /**
+     * List user phone numbers
+     */
+    phoneList() {
+      return this.$store.state.profile.phones
+    },
   },
   watch : {
     profile(newProfile, oldProfile) {
@@ -506,7 +540,7 @@ export default {
         dataIsValid => {
           if(dataIsValid === true)
           {
-            this.$store.dispatch('auth/updateProfile', this.user)
+            this.$store.dispatch('profile/updateProfile', this.user)
             .then(
               feedback => {
                 let status = feedback.status
@@ -539,14 +573,46 @@ export default {
      * Add new email
      */
     handleAddEmail() {
-      this.$refs.emailObserver.validate();
+      this.$refs.emailObserver.validate().then(
+        isValid => {
+          if(isValid === true) {
+            return this.$store.dispatch('profile/addMail', this.user)
+            .then(
+              feedback => {     
+                let status = feedback.status           
+                if(status === 201) {
+                  this.toggleAddEmail()
+                }
+              },
+              error => {
+                console.log(error)
+              });
+          }
+        }
+      );
     },
 
     /**
      * Add new phone number
      */
     handleAddPhone() {
-      this.$refs.phoneObserver.validate();
+      this.$refs.phoneObserver.validate().then(
+         isValid => {
+          if(isValid === true) {
+            return this.$store.dispatch('profile/addPhone', this.user)
+            .then(
+              feedback => {
+                let status = feedback.status
+                if(status === 201) {
+                  this.toggleAddPhone()
+                }
+              },
+              error => {
+                console.log(error)
+              });
+          }
+        }
+      );
     },
   }
   

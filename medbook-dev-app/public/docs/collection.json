@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Laravel",
-        "_postman_id": "b97068dc-2703-44c8-8a45-d8cca1fa1bc0",
+        "_postman_id": "5d7c4831-f276-4ee2-8077-a9db6b6cd4c0",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -42,7 +42,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"rerum\",\n    \"password\": \"id\"\n}"
+                            "raw": "{\n    \"email\": \"laborum\",\n    \"password\": \"necessitatibus\"\n}"
                         },
                         "description": "Gain access to the application",
                         "auth": {
@@ -74,7 +74,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"dolor\"\n}"
+                            "raw": "{\n    \"email\": \"kelsie.sauer@example.org\"\n}"
                         },
                         "description": "Send user an email with a link to change password in the event user forgot password or needs to change password",
                         "auth": {
@@ -96,7 +96,7 @@
                                 {
                                     "id": "$link",
                                     "key": "$link",
-                                    "value": "neque",
+                                    "value": "sit",
                                     "description": ""
                                 }
                             ]
@@ -114,7 +114,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"password\": \"placeat\",\n    \"password_confirmation\": \"asperiores\"\n}"
+                            "raw": "{\n    \"password\": \"facilis\",\n    \"password_confirmation\": \"modi\"\n}"
                         },
                         "description": "Set a new password that will be used to gain access the application",
                         "auth": {
@@ -122,22 +122,16 @@
                         }
                     },
                     "response": []
-                }
-            ]
-        },
-        {
-            "name": "Endpoints",
-            "description": "",
-            "item": [
+                },
                 {
-                    "name": "User profile",
+                    "name": "Refresh token",
                     "request": {
                         "url": {
                             "protocol": "http",
                             "host": "{{baseUrl}}",
-                            "path": "api\/profile",
+                            "path": "api\/refresh",
                             "query": [],
-                            "raw": "http:\/\/{{baseUrl}}\/api\/profile"
+                            "raw": "http:\/\/{{baseUrl}}\/api\/refresh"
                         },
                         "method": "GET",
                         "header": [
@@ -151,7 +145,318 @@
                             }
                         ],
                         "body": null,
-                        "description": "Get authenticated user profile\n\n@@apiResource App\\Http\\Resources\\UserResource",
+                        "description": "Refresh the bearer token when user is logged in and token is about to expire",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Log out",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/logout",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/logout"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Voluntatirly end access to the application",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "Email Addresses",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/email",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/email"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Select user email addresses",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Add email address",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/email",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/email"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"corwin.abagail@example.com\",\n    \"primary\": false,\n    \"verified\": false\n}"
+                        },
+                        "description": "Create a new user email address",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Edit email address",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/email\/:email",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/email\/:email",
+                            "variable": [
+                                {
+                                    "id": "email",
+                                    "key": "email",
+                                    "value": "sit",
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"ehalvorson@example.net\",\n    \"primary\": false,\n    \"verified\": false\n}"
+                        },
+                        "description": "Update a user email address",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete email address",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/email\/:email",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/email\/:email",
+                            "variable": [
+                                {
+                                    "id": "email",
+                                    "key": "email",
+                                    "value": "dolores",
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Remove a user email address",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Phone Number\/s",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/phone",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/phone"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Select user phone numbers",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Add phone number",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/phone",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/phone"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"phone\": 8,\n    \"primary\": false,\n    \"verified\": false\n}"
+                        },
+                        "description": "Create a new user phone number",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Edit phone number",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/phone\/:phone",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/phone\/:phone",
+                            "variable": [
+                                {
+                                    "id": "phone",
+                                    "key": "phone",
+                                    "value": "placeat",
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"phone\": 9,\n    \"primary\": false,\n    \"verified\": false\n}"
+                        },
+                        "description": "Update a user phone number",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete phone number",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/phone\/:phone",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/phone\/:phone",
+                            "variable": [
+                                {
+                                    "id": "phone",
+                                    "key": "phone",
+                                    "value": "et",
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Remove a user phone number",
                         "auth": {
                             "type": "noauth"
                         }
@@ -251,7 +556,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"gender_id\": 2,\n    \"service_id\": 16,\n    \"name\": \"recusandae\",\n    \"dob\": \"2021-01-12T09:59:15+0000\",\n    \"comments\": \"dolor\"\n}"
+                            "raw": "{\n    \"gender_id\": 15,\n    \"service_id\": 16,\n    \"name\": \"excepturi\",\n    \"dob\": \"2021-01-16T15:51:43+0000\",\n    \"comments\": \"explicabo\"\n}"
                         },
                         "description": "Create new patient record",
                         "auth": {
@@ -273,7 +578,7 @@
                                 {
                                     "id": "patient",
                                     "key": "patient",
-                                    "value": "sit",
+                                    "value": "ab",
                                     "description": ""
                                 }
                             ]
@@ -291,7 +596,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"gender_id\": 3,\n    \"service_id\": 11,\n    \"name\": \"vitae\",\n    \"dob\": \"2021-01-12T09:59:15+0000\",\n    \"comments\": \"minus\"\n}"
+                            "raw": "{\n    \"gender_id\": 17,\n    \"service_id\": 6,\n    \"name\": \"dicta\",\n    \"dob\": \"2021-01-16T15:51:43+0000\",\n    \"comments\": \"accusantium\"\n}"
                         },
                         "description": "Change patient record",
                         "auth": {
@@ -313,7 +618,7 @@
                                 {
                                     "id": "patient",
                                     "key": "patient",
-                                    "value": "perferendis",
+                                    "value": "harum",
                                     "description": ""
                                 }
                             ]
@@ -366,6 +671,73 @@
                         ],
                         "body": null,
                         "description": "Select all the services",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "User",
+            "description": "\nGender endpoints",
+            "item": [
+                {
+                    "name": "User profile",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/profile",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/profile"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Get authenticated user profile\n\n@@apiResource App\\Http\\Resources\\UserResource",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Profile",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/update_profile",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/update_profile"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"first_name\": \"quia\",\n    \"last_name\": \"qui\"\n}"
+                        },
+                        "description": "User can edit the profile data",
                         "auth": {
                             "type": "noauth"
                         }

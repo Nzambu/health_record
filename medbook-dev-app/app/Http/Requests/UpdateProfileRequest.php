@@ -28,4 +28,21 @@ class UpdateProfileRequest extends FormRequest
             'last_name' => 'required|string'
         ];
     }
+
+    /**
+     * Documentation
+     * 
+     * @return array
+     */
+    public function bodyParameters()
+    {
+        return [
+            'first_name' => [
+                'description' => 'The user baptismal or first name'
+            ],
+            'last_name' => [
+                'description' => 'The user family name'
+            ]
+        ];
+    }
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar app color="light" clipped-left>
-      <v-app-bar-nav-icon @click.stop="mini = !mini"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="miniSidebar"></v-app-bar-nav-icon>
       <v-row>
           <v-col lg="4">
             <v-list-item One-line>
@@ -59,6 +59,16 @@ export default {
     },
     methods : {
       
+      /**
+       * Set mini sidebar
+       */
+      miniSidebar() {
+        this.$store.dispatch('settings/miniSidebar').then(
+          set => {
+            console.log(set)
+          }
+        )
+      }
     }
 }
 </script>

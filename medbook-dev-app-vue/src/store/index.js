@@ -3,6 +3,8 @@ import Vuex from 'vuex';
 
 import {auth} from './AuthModule';
 import {patient} from './PatientModule';
+import {profile} from './ProfileModule';
+import {settings} from './SettingModule'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex);
@@ -17,6 +19,8 @@ export default new Vuex.Store({
   },
   modules : {
     auth,
-    patient
+    patient,
+    profile,
+    settings
   }
 });

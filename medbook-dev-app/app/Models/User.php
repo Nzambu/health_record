@@ -79,4 +79,32 @@ class User extends Authenticatable implements JWTSubject
     {
         return ["userID" => $this->usr_id];
     }
+
+    /**
+     * Return relationship instance with email
+     * 
+     * @return mixed
+     */
+    public function emails()
+    {
+        return $this->hasMany(
+            Email::class,
+            'user_id',
+            'usr_id'
+        );
+    }
+
+    /**
+     * Return relationship instance with phone
+     * 
+     * @return mixed
+     */
+    public function phone()
+    {
+        return $this->hasMany(
+            Phone::class,
+            'user_id',
+            'usr_id'
+        );
+    }
 }

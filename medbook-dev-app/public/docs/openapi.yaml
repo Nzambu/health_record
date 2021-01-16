@@ -55,11 +55,11 @@ paths:
                                 email:
                                     type: string
                                     description: 'The registered user email.'
-                                    example: rerum
+                                    example: laborum
                                 password:
                                     type: string
                                     description: 'The user secret code.'
-                                    example: id
+                                    example: necessitatibus
                             required:
                                 - email
                                 - password
@@ -111,8 +111,8 @@ paths:
                             properties:
                                 email:
                                     type: string
-                                    description: 'The registered user email.'
-                                    example: dolor
+                                    description: 'The registered user email The value must be a valid email address.'
+                                    example: kelsie.sauer@example.org
                             required:
                                 - email
             security: []
@@ -164,11 +164,11 @@ paths:
                                 password:
                                     type: string
                                     description: 'The new password that is a minimum of 8 characters.'
-                                    example: placeat
+                                    example: facilis
                                 password_confirmation:
                                     type: string
                                     description: 'Re-type the new password as a confirmation.'
-                                    example: asperiores
+                                    example: modi
                             required:
                                 - password
                                 - password_confirmation
@@ -178,14 +178,14 @@ paths:
                 in: path
                 name: $link
                 description: ''
-                example: neque
+                example: sit
                 required: true
                 schema:
                     type: string
-    /api/profile:
+    /api/refresh:
         get:
-            summary: 'User profile'
-            description: "Get authenticated user profile\n\n@@apiResource App\\Http\\Resources\\UserResource"
+            summary: 'Refresh token'
+            description: 'Refresh the bearer token when user is logged in and token is about to expire'
             parameters:
                 -
                     in: header
@@ -202,19 +202,452 @@ paths:
                     schema:
                         type: string
             responses:
-                401:
+                200:
                     description: ''
                     content:
                         application/json:
                             schema:
                                 type: object
                                 example:
-                                    message: Unauthenticated.
+                                    type: authorization
+                                    id: token
+                                    attributes: { access_token: null, token_type: null, expires_in: null }
+                                    links: { self: 'http://localhost/api/refresh' }
                                 properties:
-                                    message: { type: string, example: Unauthenticated. }
+                                    type: { type: string, example: authorization }
+                                    id: { type: string, example: token }
+                                    attributes: { type: object, example: { access_token: null, token_type: null, expires_in: null } }
+                                    links: { type: object, example: { self: 'http://localhost/api/refresh' } }
+            tags:
+                - Authentication
+            security: []
+    /api/logout:
+        get:
+            summary: 'Log out'
+            description: 'Voluntatirly end access to the application'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: authorization
+                                    id: logout
+                                    attributes: { message: 'Successfully logged out' }
+                                    links: { self: 'http://localhost/api/logout' }
+                                properties:
+                                    type: { type: string, example: authorization }
+                                    id: { type: string, example: logout }
+                                    attributes: { type: object, example: { message: 'Successfully logged out' } }
+                                    links: { type: object, example: { self: 'http://localhost/api/logout' } }
+            tags:
+                - Authentication
+            security: []
+    /api/email:
+        get:
+            summary: 'Email Addresses'
+            description: 'Select user email addresses'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                example:
+                                    - { type: email, id: '', attributes: { email: patrick@authentication.com, primary: true, verified: true } }
+                                    - { type: email, id: '', attributes: { email: patrick@authentication.com, primary: true, verified: true } }
             tags:
                 - Endpoints
             security: []
+        post:
+            summary: 'Add email address'
+            description: 'Create a new user email address'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: email
+                                    id: ''
+                                    attributes: { email: patrick@authentication.com, primary: true, verified: true }
+                                properties:
+                                    type: { type: string, example: email }
+                                    id: { type: string, example: '' }
+                                    attributes: { type: object, example: { email: patrick@authentication.com, primary: true, verified: true } }
+            tags:
+                - Endpoints
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    description: 'The user email The value must be a valid email address.'
+                                    example: corwin.abagail@example.com
+                                primary:
+                                    type: boolean
+                                    description: 'True if the number is primary, else, false.'
+                                    example: false
+                                verified:
+                                    type: boolean
+                                    description: 'True if the number is verified, else, false.'
+                                    example: false
+                            required:
+                                - email
+            security: []
+    '/api/email/{email}':
+        put:
+            summary: 'Edit email address'
+            description: 'Update a user email address'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: email
+                                    id: ''
+                                    attributes: { email: patrick@authentication.com, primary: true, verified: true }
+                                properties:
+                                    type: { type: string, example: email }
+                                    id: { type: string, example: '' }
+                                    attributes: { type: object, example: { email: patrick@authentication.com, primary: true, verified: true } }
+            tags:
+                - Endpoints
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    description: 'The user email The value must be a valid email address.'
+                                    example: ehalvorson@example.net
+                                primary:
+                                    type: boolean
+                                    description: 'True if the number is primary, else, false.'
+                                    example: false
+                                verified:
+                                    type: boolean
+                                    description: 'True if the number is verified, else, false.'
+                                    example: false
+                            required:
+                                - email
+            security: []
+        delete:
+            summary: 'Delete email address'
+            description: 'Remove a user email address'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: email
+                                    id: ''
+                                    attributes: { email: patrick@authentication.com, primary: true, verified: true }
+                                properties:
+                                    type: { type: string, example: email }
+                                    id: { type: string, example: '' }
+                                    attributes: { type: object, example: { email: patrick@authentication.com, primary: true, verified: true } }
+            tags:
+                - Endpoints
+            security: []
+        parameters:
+            -
+                in: path
+                name: email
+                description: ''
+                example: sit
+                required: true
+                schema:
+                    type: string
+    /api/phone:
+        get:
+            summary: 'Phone Number/s'
+            description: 'Select user phone numbers'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                example:
+                                    - { type: phone, id: '', attributes: { phone: '7123456', primary: true, verified: true } }
+                                    - { type: phone, id: '', attributes: { phone: '7123456', primary: true, verified: true } }
+            tags:
+                - Endpoints
+            security: []
+        post:
+            summary: 'Add phone number'
+            description: 'Create a new user phone number'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: phone
+                                    id: ''
+                                    attributes: { phone: '7123456', primary: true, verified: true }
+                                properties:
+                                    type: { type: string, example: phone }
+                                    id: { type: string, example: '' }
+                                    attributes: { type: object, example: { phone: '7123456', primary: true, verified: true } }
+            tags:
+                - Endpoints
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                phone:
+                                    type: integer
+                                    description: 'The user phone number.'
+                                    example: 8
+                                primary:
+                                    type: boolean
+                                    description: 'True if the number is primary, else, false.'
+                                    example: false
+                                verified:
+                                    type: boolean
+                                    description: 'True if the number is verified, else, false.'
+                                    example: false
+                            required:
+                                - phone
+            security: []
+    '/api/phone/{phone}':
+        put:
+            summary: 'Edit phone number'
+            description: 'Update a user phone number'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: phone
+                                    id: ''
+                                    attributes: { phone: '7123456', primary: true, verified: true }
+                                properties:
+                                    type: { type: string, example: phone }
+                                    id: { type: string, example: '' }
+                                    attributes: { type: object, example: { phone: '7123456', primary: true, verified: true } }
+            tags:
+                - Endpoints
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                phone:
+                                    type: integer
+                                    description: 'The user phone number.'
+                                    example: 9
+                                primary:
+                                    type: boolean
+                                    description: 'True if the number is primary, else, false.'
+                                    example: false
+                                verified:
+                                    type: boolean
+                                    description: 'True if the number is verified, else, false.'
+                                    example: false
+                            required:
+                                - phone
+            security: []
+        delete:
+            summary: 'Delete phone number'
+            description: 'Remove a user phone number'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: phone
+                                    id: ''
+                                    attributes: { phone: '7123456', primary: true, verified: true }
+                                properties:
+                                    type: { type: string, example: phone }
+                                    id: { type: string, example: '' }
+                                    attributes: { type: object, example: { phone: '7123456', primary: true, verified: true } }
+            tags:
+                - Endpoints
+            security: []
+        parameters:
+            -
+                in: path
+                name: phone
+                description: ''
+                example: placeat
+                required: true
+                schema:
+                    type: string
     /api/gender:
         get:
             summary: 'Get gender'
@@ -244,7 +677,7 @@ paths:
                                 items:
                                     type: object
                                 example:
-                                    - { type: gender, id: '5', attributes: { sex: Female } }
+                                    - { type: gender, id: '', attributes: { sex: Female } }
                                     - { type: gender, id: '', attributes: { sex: Female } }
             tags:
                 - Gender
@@ -278,8 +711,8 @@ paths:
                                 items:
                                     type: object
                                 example:
-                                    - { type: patient, id: '', attributes: { name: null, dob: null, comments: null }, relationships: { gender: [null], service: [null] } }
-                                    - { type: patient, id: '', attributes: { name: null, dob: null, comments: null }, relationships: { gender: [null], service: [null] } }
+                                    - { type: patient, id: '56', attributes: { name: 'Prof. Donny Lakin', dob: '1993-01-15T15:51:43.712559Z', comments: 'First Time' }, relationships: { gender: [{ type: gender, id: '2', attributes: { sex: Male } }], service: [{ type: service, id: '1', attributes: { service: Outpatient } }] } }
+                                    - { type: patient, id: '57', attributes: { name: 'Franco Huels Sr.', dob: '1993-01-15T15:51:43.716711Z', comments: 'First Time' }, relationships: { gender: [{ type: gender, id: '2', attributes: { sex: Male } }], service: [{ type: service, id: '1', attributes: { service: Outpatient } }] } }
             tags:
                 - Patient
             security: []
@@ -310,14 +743,14 @@ paths:
                                 type: object
                                 example:
                                     type: patient
-                                    id: ''
-                                    attributes: { name: null, dob: null, comments: null }
-                                    relationships: { gender: [null], service: [null] }
+                                    id: '58'
+                                    attributes: { name: 'Delpha Hansen', dob: '1993-01-15T15:51:43.748903Z', comments: 'First Time' }
+                                    relationships: { gender: [{ type: gender, id: '2', attributes: { sex: Male } }], service: [{ type: service, id: '1', attributes: { service: Outpatient } }] }
                                 properties:
                                     type: { type: string, example: patient }
-                                    id: { type: string, example: '' }
-                                    attributes: { type: object, example: { name: null, dob: null, comments: null } }
-                                    relationships: { type: object, example: { gender: [null], service: [null] } }
+                                    id: { type: string, example: '58' }
+                                    attributes: { type: object, example: { name: 'Delpha Hansen', dob: '1993-01-15T15:51:43.748903Z', comments: 'First Time' } }
+                                    relationships: { type: object, example: { gender: [{ type: gender, id: '2', attributes: { sex: Male } }], service: [{ type: service, id: '1', attributes: { service: Outpatient } }] } }
             tags:
                 - Patient
             requestBody:
@@ -330,7 +763,7 @@ paths:
                                 gender_id:
                                     type: integer
                                     description: 'Gender of the patient.'
-                                    example: 2
+                                    example: 15
                                 service_id:
                                     type: integer
                                     description: 'Type of Service.'
@@ -338,15 +771,15 @@ paths:
                                 name:
                                     type: string
                                     description: 'Name of the patient.'
-                                    example: recusandae
+                                    example: excepturi
                                 dob:
                                     type: string
                                     description: 'Patient''s date of birth The value must be a valid date.'
-                                    example: '2021-01-12T09:59:15+0000'
+                                    example: '2021-01-16T15:51:43+0000'
                                 comments:
                                     type: string
                                     description: 'General comments about the patient.'
-                                    example: dolor
+                                    example: explicabo
                             required:
                                 - gender_id
                                 - service_id
@@ -382,14 +815,14 @@ paths:
                                 type: object
                                 example:
                                     type: patient
-                                    id: ''
-                                    attributes: { name: null, dob: null, comments: null }
-                                    relationships: { gender: [null], service: [null] }
+                                    id: '59'
+                                    attributes: { name: 'Nels Kozey Sr.', dob: '1993-01-15T15:51:43.777052Z', comments: 'First Time' }
+                                    relationships: { gender: [{ type: gender, id: '2', attributes: { sex: Male } }], service: [{ type: service, id: '1', attributes: { service: Outpatient } }] }
                                 properties:
                                     type: { type: string, example: patient }
-                                    id: { type: string, example: '' }
-                                    attributes: { type: object, example: { name: null, dob: null, comments: null } }
-                                    relationships: { type: object, example: { gender: [null], service: [null] } }
+                                    id: { type: string, example: '59' }
+                                    attributes: { type: object, example: { name: 'Nels Kozey Sr.', dob: '1993-01-15T15:51:43.777052Z', comments: 'First Time' } }
+                                    relationships: { type: object, example: { gender: [{ type: gender, id: '2', attributes: { sex: Male } }], service: [{ type: service, id: '1', attributes: { service: Outpatient } }] } }
             tags:
                 - Patient
             requestBody:
@@ -402,23 +835,23 @@ paths:
                                 gender_id:
                                     type: integer
                                     description: 'Gender of the patient.'
-                                    example: 3
+                                    example: 17
                                 service_id:
                                     type: integer
                                     description: 'Type of Service.'
-                                    example: 11
+                                    example: 6
                                 name:
                                     type: string
                                     description: 'Name of the patient.'
-                                    example: vitae
+                                    example: dicta
                                 dob:
                                     type: string
                                     description: 'Patient''s date of birth The value must be a valid date.'
-                                    example: '2021-01-12T09:59:15+0000'
+                                    example: '2021-01-16T15:51:43+0000'
                                 comments:
                                     type: string
                                     description: 'General comments about the patient.'
-                                    example: minus
+                                    example: accusantium
                             required:
                                 - gender_id
                                 - service_id
@@ -453,14 +886,14 @@ paths:
                                 type: object
                                 example:
                                     type: patient
-                                    id: ''
-                                    attributes: { name: null, dob: null, comments: null }
-                                    relationships: { gender: [null], service: [null] }
+                                    id: '60'
+                                    attributes: { name: 'Hannah Williamson', dob: '1993-01-15T15:51:43.802855Z', comments: 'First Time' }
+                                    relationships: { gender: [{ type: gender, id: '2', attributes: { sex: Male } }], service: [{ type: service, id: '1', attributes: { service: Outpatient } }] }
                                 properties:
                                     type: { type: string, example: patient }
-                                    id: { type: string, example: '' }
-                                    attributes: { type: object, example: { name: null, dob: null, comments: null } }
-                                    relationships: { type: object, example: { gender: [null], service: [null] } }
+                                    id: { type: string, example: '60' }
+                                    attributes: { type: object, example: { name: 'Hannah Williamson', dob: '1993-01-15T15:51:43.802855Z', comments: 'First Time' } }
+                                    relationships: { type: object, example: { gender: [{ type: gender, id: '2', attributes: { sex: Male } }], service: [{ type: service, id: '1', attributes: { service: Outpatient } }] } }
             tags:
                 - Patient
             security: []
@@ -469,7 +902,7 @@ paths:
                 in: path
                 name: patient
                 description: ''
-                example: sit
+                example: ab
                 required: true
                 schema:
                     type: string
@@ -502,8 +935,100 @@ paths:
                                 items:
                                     type: object
                                 example:
-                                    - { type: service, id: '', attributes: { sex: Outpatient } }
-                                    - { type: service, id: '', attributes: { sex: Outpatient } }
+                                    - { type: service, id: '', attributes: { service: Outpatient } }
+                                    - { type: service, id: '', attributes: { service: Outpatient } }
             tags:
                 - Service
+            security: []
+    /api/profile:
+        get:
+            summary: 'User profile'
+            description: "Get authenticated user profile\n\n@@apiResource App\\Http\\Resources\\UserResource"
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                401:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    message: Unauthenticated.
+                                properties:
+                                    message: { type: string, example: Unauthenticated. }
+            tags:
+                - User
+            security: []
+    /api/update_profile:
+        post:
+            summary: 'Update Profile'
+            description: 'User can edit the profile data'
+            parameters:
+                -
+                    in: header
+                    name: Content-Type
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+                -
+                    in: header
+                    name: Accept
+                    description: ''
+                    example: application/json
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: ''
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                example:
+                                    type: user
+                                    id: ''
+                                    attributes: { firstName: Patrick, lastName: Nzioki, name: 'Patrick Nzioki', email: patrick@authentication.com }
+                                    relationships: { email: [[]], phone: [[]] }
+                                    links: { self: 'http://localhost/api/update_profile' }
+                                properties:
+                                    type: { type: string, example: user }
+                                    id: { type: string, example: '' }
+                                    attributes: { type: object, example: { firstName: Patrick, lastName: Nzioki, name: 'Patrick Nzioki', email: patrick@authentication.com } }
+                                    relationships: { type: object, example: { email: [[]], phone: [[]] } }
+                                    links: { type: object, example: { self: 'http://localhost/api/update_profile' } }
+            tags:
+                - User
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                first_name:
+                                    type: string
+                                    description: 'The user baptismal or first name.'
+                                    example: quia
+                                last_name:
+                                    type: string
+                                    description: 'The user family name.'
+                                    example: qui
+                            required:
+                                - first_name
+                                - last_name
             security: []

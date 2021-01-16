@@ -109,7 +109,7 @@
     },
     computed: {
       profile() {
-        let data = this.$store.state.auth.profile ?? null
+        let data = this.$store.state.profile.profile ?? null
         return data
       }
     },
@@ -119,7 +119,7 @@
        * Load user profile
        */
       getUserProfile() {
-        this.$store.dispatch('auth/profile').then(
+        this.$store.dispatch('profile/profile').then(
         response => {
           let data = response
 

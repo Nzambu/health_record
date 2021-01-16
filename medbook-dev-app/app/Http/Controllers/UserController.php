@@ -13,6 +13,13 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\UpdateProfileRequest;
 
+/**
+ * @group User
+ *
+ * Gender endpoints
+ * 
+ * @package Controllers
+ */
 class UserController extends Controller
 {
     /**

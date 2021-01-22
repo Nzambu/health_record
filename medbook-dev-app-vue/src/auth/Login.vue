@@ -6,14 +6,20 @@
     >
         <v-row>
             <v-col 
+                offset-xl="4"
+                xl="4"
                 offset-lg="4"
-                lg="4"
+                lg="4"  
+                offset-md="3"
+                md="6" 
+                offset-sm="2"   
+                sm="8" 
+                xs="12"         
             >
-                <v-card>
-                    <v-card-text class="pt-10">
-                        <h1 class="text-center primary--text">Authentication</h1>
-                    </v-card-text>
-                    <div class="pt-15">
+                <v-card
+                    class="mx-15 mx-xs-0"
+                >
+                    <div>
                         <v-snackbar
                             color="red"
                             top
@@ -41,6 +47,9 @@
                         </template>
                     </v-snackbar>
                     </div>
+                    <v-card-text class="pt-10">
+                        <h1 class="text-center primary--text">Authentication</h1>
+                    </v-card-text>                    
                     <v-row class="px-10 pb-5">
                         <v-col lg="12">
                             <validation-observer
@@ -59,7 +68,15 @@
                                             :error-messages="errors"
                                             label="Email"
                                             required
-                                        ></v-text-field>
+                                            outlined
+                                            filled
+                                        >
+                                            <v-icon
+                                                slot="append"
+                                            >
+                                            mdi-email
+                                            </v-icon>
+                                        </v-text-field>
                                     </validation-provider>
                                     <validation-provider
                                         v-slot="{errors}"
@@ -72,7 +89,15 @@
                                             label="Password"
                                             type="password"
                                             required
-                                        ></v-text-field>
+                                            outlined
+                                            filled
+                                        >
+                                            <v-icon
+                                                slot="append"
+                                            >
+                                            mdi-lock
+                                            </v-icon>
+                                        </v-text-field>
                                     </validation-provider>
                                     <v-row class="pt-5">
                                         <v-col lg="12">
@@ -87,15 +112,25 @@
                                     >
                                         <v-col 
                                             lg="6"
-                                            class="pt-0"
+                                            class="pt-0 text-left py-0"
                                         >
-                                            <p class="text-left py-0 pl-0" @click="handleForgotPassword"><small>Forgot password? <span class="primary--text">Click here</span></small></p>
+                                            <v-btn
+                                                class="white--text text-capitalize"
+                                                color="warning"
+                                                x-small
+                                                @click="handleForgotPassword"
+                                            >Forgot Password</v-btn>
                                         </v-col> 
                                         <v-col 
                                             lg="6"
-                                            class="pt-0"
+                                            class="pt-0 text-right py-0 pl-0"
                                         >
-                                            <p class="text-right py-0 pl-0" @click="handleRegister"><small><span class="primary--text">Register</span></small></p>
+                                            <v-btn
+                                                class="white--text text-capitalize"
+                                                color="blue"
+                                                x-small
+                                                @click="handleRegister"
+                                            >Register</v-btn>
                                         </v-col> 
                                     </v-row>
                                 </v-form>
@@ -152,7 +187,7 @@
                                             required
                                         ></v-text-field>
                                     </validation-provider>
-                                    <v-row class="pt-5">
+                                    <!-- <v-row class="pt-5">
                                         <v-col lg="6">
                                             <v-btn block
                                                 class="grey text-capitalize"
@@ -165,7 +200,36 @@
                                                 @click="handleRegistration"
                                             >Register</v-btn>
                                         </v-col>
-                                    </v-row>
+                                    </v-row> -->
+                                    <v-row class="pt-5">                                            
+                                            <v-col 
+                                                xl="12"
+                                                lg="12"
+                                                md="12"
+                                                sm="12"
+                                                xs="12"
+                                            >
+                                                <v-btn block
+                                                    class="success text-capitalize"
+                                                    @click="handleRegistration"
+                                                >Register</v-btn>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col 
+                                                xl="12"
+                                                lg="12"
+                                                md="12"
+                                                sm="12"
+                                                xs="12"
+                                            >
+                                                <v-btn
+                                                    class="grey white--text text-capitalize"
+                                                    x-small
+                                                    @click="handleCancelShow"
+                                                >Cancel</v-btn>
+                                            </v-col>
+                                        </v-row>
                                 </validation-observer>
                             </v-form>
                             <v-form v-if="showForgotPassword">
@@ -183,20 +247,41 @@
                                                 :error-messages="errors"
                                                 label="Email"
                                                 required
-                                            ></v-text-field>
+                                                outlined
+                                                filled
+                                            >
+                                                <v-icon
+                                                    slot="append"
+                                                >mdi-email</v-icon>
+                                            </v-text-field>
                                         </validation-provider>                                        
-                                        <v-row class="pt-5">
-                                            <v-col lg="6">
-                                            <v-btn block
-                                                class="grey text-capitalize"
-                                                @click="handleCancelShow"
-                                            >Cancel</v-btn>
-                                        </v-col>
-                                            <v-col lg="6">
+                                        <v-row class="pt-5">                                            
+                                            <v-col 
+                                                xl="12"
+                                                lg="12"
+                                                md="12"
+                                                sm="12"
+                                                xs="12"
+                                            >
                                                 <v-btn block
                                                     class="success text-capitalize"
                                                     @click="handleResetPassword"
                                                 >Send Reset Email</v-btn>
+                                            </v-col>
+                                        </v-row>
+                                        <v-row>
+                                            <v-col 
+                                                xl="12"
+                                                lg="12"
+                                                md="12"
+                                                sm="12"
+                                                xs="12"
+                                            >
+                                                <v-btn
+                                                    class="grey white--text text-capitalize"
+                                                    x-small
+                                                    @click="handleCancelShow"
+                                                >Cancel</v-btn>
                                             </v-col>
                                         </v-row>
                                     </validation-observer>
@@ -251,68 +336,156 @@ export default {
             this.showRegister = !this.showRegister
         },
 
+                /**
+         * Authenticate user
+         */
+        handleLogin() {
+            this.$refs.loginObserver.validate().then(
+                isValid => {
+                    if(isValid === true) {
+                        this.$store.dispatch('auth/login', this.user)
+                        .then(
+                            (response) => {
+                            let data = response
+                            /**
+                             * Successfully logged in
+                             */
+                            if(response.data.attributes !== undefined) {
+                                let tokenBearer = response.data
+                                let token = tokenBearer.attributes.access_token
+                                if(token) {
+                                    // Store token in session storage
+                                    sessionStorage.setItem('token', JSON.stringify(token));
+                                    // Set the authorization bearer token
+                                    Axios.defaults.headers.common.Authorization = 'Bearer '+ token
+                                    // Redirect to the requested link or profile
+                                    let path = this.$route.query.from
+                                    if(path === '/') {
+                                        this.$router.push('/patient')
+                                    } else {
+                                        this.$router.push(path || '/patient')
+                                    }
+                                } 
+                            } else {
+                                /**
+                                 * User does not exist or its invalid
+                                 */
+                                if(response.data.errors) {
+                                    let error = data.response.data.errors
+                                    return this.handleErrorsFromAPI(error)
+                                }
+                                
+                                /**
+                                 * Password is wrong
+                                 */
+                                if(response.data.error.code) {
+                                    let message = response.data.error.detail                    
+                                    let error =  []
+                                    error.push([message])
+                                    return this.handleErrorsFromAPI(error)
+                                }
+                            }
+                            },
+                            (failed) => {
+                               let error = failed.response.data.errors 
+                                return this.handleErrorsFromAPI(error)
+                            }
+                        )
+                    }
+                }
+            );            
+        },
+
         /**
          * Authenticate user
          */
-        async handleLogin() {
-            const invalid = await this.$refs.loginObserver.validate();
-            if(invalid) {
-                // console.log("kuku dance")
-            }  
-            
+        TODOhandleLogin() {
+            this.$refs.loginObserver.validate().then(
+                isValid => {
+                    if(isValid === true){
 
-            this.$store.dispatch('auth/login', this.user)
-            .then(
-                (response) => {
-                let data = response
+                        this.$store.dispatch('auth/login', this.user)
+                        .then(
+                            (response) => {
+                            let data = response
 
-                /**
-                 * Successfully logged in
-                 */
-                if(response.data) {
-                    let tokenBearer = response.data
-                    let token = tokenBearer.attributes.access_token
-                    if(token) {
-                        // Store token in session storage
-                        sessionStorage.setItem('token', JSON.stringify(token));
-                        // Set the authorization bearer token
-                        Axios.defaults.headers.common.Authorization = 'Bearer '+ token
-                        // Redirect to the requested link or profile
-                        let path = this.$route.query.from
-                        if(path === '/') {
-                            this.$router.push('/patient')
-                        } else {
-                            this.$router.push(path || '/patient')
-                        }
-                    } 
-                } else {
+                                /**
+                                 * TODO
+                                 * Handle password error
+                                 */
+                                if(response.data.error.status === 401) {
+                                    // let error = data.data.error.detail
+                                    let message = data.data.error.detail                    
+                                    let error =  []
+                                    error.push([message])
+                                    return this.handleErrorsFromAPI(error)
+                                }
 
-                    /**
-                     * User does not exist or its invalid
-                     */
-                    if(response.response.data.errors) {
-                        let error = data.response.data.errors
-                        return this.handleErrorsFromAPI(error)
-                    }
-                    
-                    /**
-                     * Password is wrong
-                     */
-                    if(response.response.data.error.code) {
-                        let message = data.response.data.error.detail                    
-                        let error =  []
-                        error.push([message])
-                        return this.handleErrorsFromAPI(error)
-                    }
-                }
-                },
-                (failed) => {
-                    let message = failed.messages                  
-                    let error =  []
-                    error.push([message])
-                    return this.handleErrorsFromAPI(error)
-                }
-            )
+
+                                /**
+                                 * Successfully logged in
+                                 */
+                                if(response.data) {
+                                    let tokenBearer = response.data
+                                    let token = tokenBearer.attributes.access_token
+                                    if(token) {
+                                        // Store token in session storage
+                                        sessionStorage.setItem('token', JSON.stringify(token));
+                                        // Set the authorization bearer token
+                                        Axios.defaults.headers.common.Authorization = 'Bearer '+ token
+                                        // Redirect to the requested link or profile
+                                        let path = this.$route.query.from
+                                        if(path === '/') {
+                                            this.$router.push('/patient')
+                                        } else {
+                                            this.$router.push(path || '/patient')
+                                        }
+                                    }
+                                    // let tokenBearer = response.data
+                                    // let token = tokenBearer.attributes.access_token
+                                    // if(token) {
+                                    //     // Store token in session storage
+                                    //     sessionStorage.setItem('token', JSON.stringify(token));
+                                    //     // Set the authorization bearer token
+                                    //     Axios.defaults.headers.common.Authorization = 'Bearer '+ token
+                                    //     // Redirect to the requested link or profile
+                                    //     let path = this.$route.query.from
+                                    //     if(path === '/') {
+                                    //         this.$router.push('/patient')
+                                    //     } else {
+                                    //         this.$router.push(path || '/patient')
+                                    //     }
+                                    // } 
+                                } else {
+
+                                    /**
+                                     * User does not exist or its invalid
+                                     */
+                                    if(response.response.data.errors) {
+                                        let error = data.response.data.errors
+                                        return this.handleErrorsFromAPI(error)
+                                    }
+                                    
+                                    /**
+                                     * Password is wrong
+                                     */
+                                    if(response.response.data.error.code) { 
+                                        let message = data.response.data.error.detail                    
+                                        let error =  []
+                                        error.push([message])
+                                        return this.handleErrorsFromAPI(error)
+                                    }
+                                }
+                            },
+                            (fail) => {   
+                                console.log(fail)          
+                                let error = fail.data.errors 
+                                return this.handleErrorsFromAPI(error)
+                            }
+                        );
+                     }
+                }                
+            );
         },
 
         /**

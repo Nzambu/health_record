@@ -9,11 +9,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Email;
+use App\Models\Password;
 use Illuminate\Support\Str;
 use App\Models\Auth\JWTAuth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Auth\ForgotPasswordMail;
 use App\Http\Requests\Auth\JWTRequest;
@@ -46,21 +49,22 @@ class JWTController extends Controller
      */
     public function login(JWTRequest $request) 
     {
-        $credentials = [
-            "email" => $request->email, 
-            "password" => $request->password
-        ];
-        if (! $token = $this->auth()->attempt($credentials)) {
-            $request["code"] = "ATH001";
-            $request["status"] =  401;
-            $request["title"] = "The password is incorrect";
-            $request["detail"] = "Please provide the correct user password";
-            return (new ErrorResource($request))
-                ->response()
-                ->setStatusCode(401);
-        }
-        $request->access_token = $token;
-        return $this->respondWithToken($request);
+        return $this->emailPasswordLogin($request);
+        // $credentials = [
+        //     "email" => $request->email, 
+        //     "password" => $request->password
+        // ];
+        // if (! $token = $this->auth()->attempt($credentials)) {
+        //     $request["code"] = "ATH001";
+        //     $request["status"] =  401;
+        //     $request["title"] = "The password is incorrect";
+        //     $request["detail"] = "Please provide the correct user password";
+        //     return (new ErrorResource($request))
+        //         ->response()
+        //         ->setStatusCode(401);
+        // }
+        // $request->access_token = $token;
+        // return $this->respondWithToken($request);
     }
 
     /**
@@ -164,5 +168,42 @@ class JWTController extends Controller
         return  (new JWTResource($request))
             ->response()
             ->setStatusCode(200);
+    }
+
+    /**
+     * 
+     */
+    public function emailPasswordLogin($request) {
+        $email = $request->email;
+        $password = $request->password;
+        $emailData = Email::where([
+            ['primary', true],
+            ['email', $email]
+        ])->first();
+        
+        // return $emailData->user_id;
+        if($emailData) {
+            $passwordData = Password::where('user_id', $emailData->user_id)->orderBy('psw_id', 'DESC')->first();
+
+            if(!Hash::check($password, $passwordData->password)) {
+                $request["code"] = "ATH001";
+                $request["status"] =  401;
+                $request["title"] = "The password is incorrect";
+                $request["detail"] = "Please provide the correct user password";
+                return (new ErrorResource($request))
+                    ->response();
+                    // ->setStatusCode(401);
+            } 
+                $user = User::where('usr_id', $emailData->user_id)->first();
+                $request->access_token = $this->auth()->login($user);
+                return $this->respondWithToken($request);
+        } else {
+            /**
+             * TODO
+             * 
+             * return user not found
+             */
+            return "User not found";
+        }
     }
 }

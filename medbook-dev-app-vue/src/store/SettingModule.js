@@ -1,5 +1,5 @@
 const initialState = {
-    sidebarMini : false,
+    miniSidebar : false,
 }
 export const settings = {
     namespaced: true,
@@ -10,8 +10,15 @@ export const settings = {
          * Get authenticated user profile
          * 
          */
-        miniSidebar({ commit }) {
-            commit('sidebarMini')
+        miniSidebar({ commit }, toggle) {
+            let change = null
+            if(toggle === true) {
+                change = true;
+            } else {
+                change = false;
+            }
+            commit('miniSidebar', change);
+            return change;
         },
 
     },
@@ -21,8 +28,8 @@ export const settings = {
          * Handle laoded user profile
          * 
          */
-        sidebarMini(state) {
-           state.sidebarMini = !state.sidebarMini
+        miniSidebar(state) {
+           state.miniSidebar = !state.miniSidebar
         },
     }
 }

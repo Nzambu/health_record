@@ -29,7 +29,7 @@ class ProfileService {
      * 
      * @param {*} data 
      */
-    addNewMail(data) {
+    addNewMail = (data) => {
         return Axios({
             method : 'POST',
             url : 'email',
@@ -42,7 +42,7 @@ class ProfileService {
      * 
      * @param {*} data 
      */
-    editMail(data) {
+    editMail = (data) => {
         return Axios({
             method : 'POST',
             url : 'email/' + data.id,
@@ -55,7 +55,7 @@ class ProfileService {
      * 
      * @param {*} data 
      */
-    addNewPhone(data) {
+    addNewPhone = (data) => {
         return Axios({
             method : 'POST',
             url : 'phone',
@@ -68,7 +68,7 @@ class ProfileService {
      * 
      * @param {*} data 
      */
-    editPhone(data) {
+    editPhone = (data) => {
         return Axios({
             method : 'POST',
             url : 'phone/' + data.id,
@@ -76,6 +76,37 @@ class ProfileService {
         });
     }
 
+    /**
+     * switch primary phone number
+     * 
+     * @param {*} data 
+     */
+    switchPrimaryPhone = (data) => {
+        return Axios({
+            method : 'POST',
+            url : 'switch_primary_phone',
+            data : {
+                "phone" : data.phone
+            }
+        });
+    }
+
+    /**
+     * switch primary email
+     * 
+     * @param {*} data 
+     */
+    switchPrimaryEmail = (data) => {
+        return Axios({
+            method : 'POST',
+            url : 'switch_primary_email',
+            data : {
+                "email" : data.email
+            }
+        });
+    }
+    
+    
 
 }
 export default new ProfileService;

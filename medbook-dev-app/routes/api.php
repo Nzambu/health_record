@@ -29,21 +29,32 @@ Route::group([
     |
     */
     Route::post('login', ['App\Http\Controllers\Auth\JWTController', 'login']); 
-    Route::post('forgot_password', ['App\Http\Controllers\Auth\JWTController','forgotPassword']);
-    Route::post('change_password/{$link}', ['App\Http\Controllers\Auth\JWTController','changePassword']);
-});
+    Route::post('forgot_password', ['App\Http\Controllers\Auth\JWTController','forgotPassword']);    
 
-Route::group(['middleware' => 'auth:api', 'as' => 'auth'], function ()
-{
-    /*
+     /*
     |-----------------------------------------------------------------------------------------------------------------------------
     | Authentication Routes - refresh, logout
     |-----------------------------------------------------------------------------------------------------------------------------
     | The routes address refreshing access token and user log out
     |
     */
+    Route::post('verify_reset_password_token', ['App\Http\Controllers\ResetPasswordController', 'verifyResetPasswordToken']);
+    Route::post('change_password', ['App\Http\Controllers\ResetPasswordController','changePassword']);
+    
+});
+
+Route::group(['middleware' => 'auth:api', 'as' => 'auth'], function ()
+{ 
+    /*
+    |-----------------------------------------------------------------------------------------------------------------------------
+    | Authentication Routes - refresh, logout, profile change password
+    |-----------------------------------------------------------------------------------------------------------------------------
+    | The routes address refreshing access token, user log out, change password while logged in
+    |
+    */
     Route::get('refresh', ['App\Http\Controllers\Auth\JWTController', 'refreshToken']); 
     Route::get('logout', ['App\Http\Controllers\Auth\JWTController', 'logout']); 
+    Route::post('profile_change_password', ['App\Http\Controllers\ResetPasswordController', 'profileChangePassword']);
 
     /*
     |-----------------------------------------------------------------------------------------------------------------------------
@@ -62,15 +73,17 @@ Route::group(['middleware' => 'auth:api', 'as' => 'auth'], function ()
     | The routes controll email records
     |
     */
+    Route::post('switch_primary_email', ['App\Http\Controllers\EmailController', 'switchPrimaryEmail']);
     Route::apiResource('email', 'App\Http\Controllers\EmailController');
 
     /*
     |-----------------------------------------------------------------------------------------------------------------------------
-    | User Phone Routes - CRUD
+    | User Phone Routes - CRUD, switch primary phone
     |-----------------------------------------------------------------------------------------------------------------------------
     | The routes controll phone records
     |
     */
+    Route::post('switch_primary_phone', ['App\Http\Controllers\PhoneController', 'switchPrimaryPhone']);
     Route::apiResource('phone', 'App\Http\Controllers\PhoneController');
 
     /*

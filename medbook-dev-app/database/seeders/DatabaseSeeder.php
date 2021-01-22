@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(1)->create();
         \App\Models\Email::factory(1)->create();
         \App\Models\Phone::factory(1)->create();
+        \App\Models\Password::factory(1)->create();
 
         DB::table('tbl_service')->insert([
             ['service' => 'Outpatient'],

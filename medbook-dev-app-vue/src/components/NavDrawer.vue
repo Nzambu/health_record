@@ -1,12 +1,19 @@
 <template>
     <!-- <Sidebar v-model="drawer"/> -->
     <v-navigation-drawer
-      absolute
+      fixed
       :mini-variant.sync="mini"
-      color="light"
+      color="default"      
       app
       clipped
     >
+    <!-- <v-navigation-drawer
+      permanent
+      expand-on-hover
+      app
+      absolute
+      clipped
+    > -->
       <v-list
           nav
           dense
@@ -33,7 +40,12 @@ export default {
     name: 'NavDrawer',
     data () {
       return {
-        mini : false
+        // mini : false
+      }
+    },
+    computed : {
+      mini() {
+        return this.$store.state.settings.miniSidebar
       }
     },
     components : {

@@ -2,7 +2,8 @@ import ProfileService from '../services/ProfileService';
 const initialState = {
     profile : [],
     emails : [],
-    phones : []
+    phones : [],
+    password : [],
 }
 export const profile = {
     namespaced: true,
@@ -143,15 +144,60 @@ export const profile = {
             return ProfileService.editPhone(phone)
             .then(
                 feedback => {
+                    console.log(feedback)
                     let phoneNumber = feedback
-                    commit('editPhone', phoneNumber.data)
+                    commit('editPhone', feedback.data)
                     return Promise.resolve(phoneNumber)
                 },
                 fail => {
                     return fail
                 }
             );
-        }
+        },
+
+        /**
+         * Switch Primary email
+         * 
+         * @param {*} param0 
+         * @param {*} email 
+         */
+        switchPrimaryEmail({ commit }, data) {
+            
+            /**
+             * Switch emails
+             */
+            return ProfileService.switchPrimaryEmail(data)
+            .then(
+                feedback => {
+                    console.log(feedback)
+                    commit('switchEmail', feedback.data)
+                    return Promise.resolve(feedback)
+                },
+                fail => {
+                    return fail
+                }
+            )
+        },
+
+        switchPrimaryPhone({ commit }, data) {
+
+            /**
+             * Switch primary phone
+             */
+            return ProfileService.switchPrimaryPhone(data)
+            .then(
+                feedback => {
+                    console.log(feedback)
+                    // let phoneNumber = feedback
+                    commit('switchPhone', feedback.data)
+                    return Promise.resolve(feedback.data)
+                },
+                fail => {
+                    console.log(fail)
+                    return fail
+                }
+            )
+        },
     },
     mutations: {
 
@@ -165,6 +211,7 @@ export const profile = {
             state.profile = profile
             state.emails = profile.relationships.email[0]
             state.phones = profile.relationships.phone[0]
+            state.password = profile.relationships.password[0]
         },
 
         /**
@@ -177,6 +224,7 @@ export const profile = {
             state.profile = newProfile
             state.emails = newProfile.relationships.email[0]
             state.phones = newProfile.relationships.phone[0]
+            state.password = newProfile.relationships.password[0]
         },
 
         /**
@@ -225,6 +273,26 @@ export const profile = {
             if(phoneIndex !== -1) {
                 phoneList.splice(phoneIndex, 1, updatedPhone)
             }
+        },
+
+        /**
+         * Switch primary phone number 
+         * 
+         * @param {*} state 
+         * @param {*} data 
+         */
+        switchPhone(state, data) {
+            state.phones = data
+        },
+
+        /**
+         * Switch primary email
+         * 
+         * @param {*} state 
+         * @param {*} data 
+         */
+        switchEmail(state, data) {
+            state.emails = data
         },
 
         /**

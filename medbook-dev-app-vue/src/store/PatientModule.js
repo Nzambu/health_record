@@ -59,10 +59,9 @@ export const patient = {
                 patient => {
                     let record = patient.data
                     commit('update', record);
-                    return Promise.resolve(record)
+                    return Promise.resolve(patient)
                 },
                 error => {
-                    commit('fail');
                     return Promise.reject(error);
                 }
             );

@@ -29,6 +29,9 @@ class UserResource extends JsonResource
                 ],
                 'phone' => [
                     PhoneResource::collection($this->phone)
+                ],
+                'password' => [
+                    new PasswordResource($this->password($this->usr_id))
                 ]
             ],
             "links" => [

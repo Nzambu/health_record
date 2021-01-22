@@ -79,9 +79,9 @@ class Handler extends ExceptionHandler
             $request['code'] = 'MNF001';
             $request['title'] = 'Route Not Found';
             $request['status'] = 404;
-            $request['message'] = 'Item not found';
+            $request['message'] = 'Route not found';
             $request['detail'] = $exception->getMessage();
-            $request['meta'] = $this->metatdata;
+            $request['meta'] = $this->metadata;
             return Response::json($request);
         });
 
@@ -90,9 +90,9 @@ class Handler extends ExceptionHandler
             $request['code'] = 'NFH002';
             $request['title'] = 'Record Not Found';
             $request['status'] = $exception->getStatusCode();            
-            $request['message'] = 'Item not found';
+            $request['message'] = 'The item was not found';
             $request['detail'] = $exception->getMessage();
-            $request['meta'] = $this->metatdata;
+            $request['meta'] = $this->metadata;
             return Response::json($request);
         });
 

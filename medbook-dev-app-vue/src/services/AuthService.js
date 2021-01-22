@@ -1,6 +1,6 @@
 import Axios from './Axios'
 class AuthService {
-    login(data) { 
+    login = (data) => { 
         return Axios({
             method: 'POST',
             url: 'login',

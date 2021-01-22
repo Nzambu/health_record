@@ -63,9 +63,12 @@ export default {
        * Set mini sidebar
        */
       miniSidebar() {
-        this.$store.dispatch('settings/miniSidebar').then(
+        this.mini = !this.mini
+        this.$store.dispatch('settings/miniSidebar', this.mini).then(
           set => {
-            console.log(set)
+            if(set === true) {
+               this.$store.state.settings.miniSidebar
+            }
           }
         )
       }

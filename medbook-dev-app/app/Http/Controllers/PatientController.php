@@ -61,15 +61,15 @@ class PatientController extends Controller
      * @apiResource App\Http\Resources\PatientResource
      * @apiResourceModel App\Models\Patient
      */
-    public function update(PatientRequest $request, $patient) 
+    public function update(PatientRequest $request, Patient $patient) 
     {
         // Find patient
-        $user =  Patient::findOrFail($patient);
-        $data = $request->only($user->getFillable());
+        // $user =  Patient::findOrFail($patient);
+        $data = $request->only($patient->getFillable());
         // Update record
-        $user->fill($data)->update();
+        $patient->fill($data)->update();
         // Return updated user
-        return new PatientResource($user);
+        return new PatientResource($patient);
     }
 
     /**

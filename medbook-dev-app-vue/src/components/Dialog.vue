@@ -107,6 +107,11 @@
           this.getUserProfile()
         })
     },
+    mounted() {
+      this.$nextTick(() => {
+        this.refreshToken()
+      })
+    },
     computed: {
       profile() {
         let data = this.$store.state.profile.profile ?? null
@@ -133,6 +138,20 @@
         error => {
           console.log(error.response)
         })
+      },
+
+      /**
+       * Refresh the access token
+       * 
+       */
+      refreshToken() {
+        // let time = this.$store.state.auth.accessToken.expires_in
+        // let interval = (time - 10)*1000
+        // console.log(interval)
+        // let k = 0
+        // setInterval(() => {
+        //   console.log(k++)
+        // }, 10)
       },
 
       gotToUSerProfile() {

@@ -31,8 +31,8 @@ class PatientService {
      */
     updatePatient(data) {
         return Axios({
-            method : 'UPDATE',
-            url : 'patient/'+data.patientID,
+            method : 'PATCH',
+            url : 'patient/'+data.id,
             data : data
         })
     }

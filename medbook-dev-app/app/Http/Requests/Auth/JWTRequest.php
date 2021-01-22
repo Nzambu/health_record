@@ -24,7 +24,8 @@ class JWTRequest extends FormRequest
     public function rules()
     {
         return [
-            "email" => "required|string|exists:users,email",
+            // "email" => "required|string|exists:users,email",
+            "email" => "required|string|exists:emails,email",
             "password" => "required|string"
         ];
     }

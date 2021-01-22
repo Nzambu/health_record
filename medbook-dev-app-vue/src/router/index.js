@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../auth/Login.vue'
-import Main from '../views/Layouts/Main.vue';
 import NProgress from 'nprogress'
 
 Vue.use(VueRouter)
@@ -13,9 +12,10 @@ const routes = [
     component: Login
   },
   {
-    path: '/main',
-    name: 'Home',
-    component: Main
+    path : '/password',
+    name : 'Password',
+    component : () => import(/* webpackChunkName: "password" */ '../auth/Password.vue'),
+    props : route => ({ query: route.query.token }),
   },
   {
     path: '/',
@@ -33,7 +33,7 @@ const routes = [
       {
         path: 'Patient',
         // Lazy-loaded only when router is visited
-        component: () => import(/* webpackChunkName: "profile" */'../views/Patient.vue'),
+        component: () => import(/* webpackChunkName: "patient" */'../views/Patient.vue'),
         meta : {
           name : 'Patient Health Record'
         }
@@ -65,7 +65,7 @@ router.afterEach(() => {
 
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/login'];
+  const publicPages = ['/login', '/password'];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = sessionStorage.getItem('token');
   /* 

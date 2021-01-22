@@ -24,8 +24,10 @@ class ChangePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            "password" => "required|string|min:8",
-            "password_confirmation" => "required|confirmed"
+            "password" => "required|string|min:8|confirmed",
+            "password_confirmation" => "required|string|min:8|string",
+            'previous_password' => 'required|string'
+            // "token" => "required|string|exists:password_resets,token"
         ];
     }
 
@@ -39,7 +41,10 @@ class ChangePasswordRequest extends FormRequest
             ],
             "password_confirmation" => [
                 "description" => "Re-type the new password as a confirmation",
-            ]
+            ],
+            // "token" => [
+            //     "description" => "A password reset token generated and send to the user through send forgot password",
+            // ]
         ];
     }
 }

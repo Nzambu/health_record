@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 use App\Models\Email;
 use Illuminate\Http\Request;
 use App\Http\Requests\EmailRequest;
+use App\Http\Requests\SwitchPrimaryEmailRequest;
 use App\Http\Resources\EmailResource;
 
 /**
@@ -89,5 +90,21 @@ class EmailController extends Controller
     public function destroy(Email $email) {
         $email->delete();
         return new EmailResource($email);
+    }
+
+    /**
+     * Change primary email
+     * 
+     * Switch the emailss to make the other email a primary. The current primary email will be set to false.
+     * 
+     * @apiResourceCollection App\Http\Resources\EmailResource
+     * @apiResourceModel App\Models\Email
+     */
+    public function switchPrimaryEmail(SwitchPrimaryEmailRequest $request) {
+        $email = Email::where('email', $request->email)->first();
+        $userID = $email->user_id;
+        Email::where('user_id', $userID)->update(['primary' => false]);
+        Email::where('email', $request->email)->update(['primary' => true]);
+        return $this->index();
     }
 }

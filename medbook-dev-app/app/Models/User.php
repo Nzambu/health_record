@@ -107,4 +107,27 @@ class User extends Authenticatable implements JWTSubject
             'usr_id'
         );
     }
+
+    /**
+     * Return relationship instance with phone
+     * 
+     * @return mixed
+     */
+    public function password($userID)
+    { 
+        return Password::where('user_id', $userID)->orderBy('psw_id', 'DESC')->first();
+    }
+
+    /**
+     * Return relationship instance with passwords
+     * 
+     * @return mixed
+     */
+    public function passwords() {
+        return $this->hasMany(
+            Password::class,
+            'user_id',
+            'usr_id'
+        );
+    }
 }

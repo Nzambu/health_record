@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PhoneRequest;
+use App\Http\Requests\SwitchPrimaryPhoneRequest;
 use App\Models\Phone;
 use Illuminate\Http\Request;
 use App\Http\Resources\PhoneResource;
@@ -68,6 +69,7 @@ class PhoneController extends Controller
      * @return object A new phone number
      */
     public function update(PhoneRequest $request, Phone $phone) {
+        return $request;
         $user = auth()->user();
         if($user->usr_id === $phone->user_id) {
             $data = $request->only($phone->getFillable());
@@ -89,5 +91,22 @@ class PhoneController extends Controller
     public function destroy(Phone $phone) {
         $phone->delete();
         return new PhoneResource($phone);
+    }
+
+    /**
+     * Change primary phone number
+     * 
+     * Switch the numbers to make the other number a primary. The current primary phone number will be set to false.
+     * 
+     * @apiResourceCollection App\Http\Resources\PhoneResource
+     * @apiResourceModel App\Models\Phone
+     */
+    public function switchPrimaryPhone(SwitchPrimaryPhoneRequest $request) {
+        $phone = Phone::where('phone', $request->phone)->first();
+        $userID = $phone->user_id;
+        Phone::where('user_id', $userID)->update(['primary' => false]);
+        Phone::where('phone', $request->phone)->update(['primary' => true]);
+        return $this->index();
+
     }
 }

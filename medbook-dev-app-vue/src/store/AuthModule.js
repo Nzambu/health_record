@@ -19,11 +19,12 @@ export const auth = {
         login({ commit }, user) { 
             return AuthService.login(user).then(
                 accessToken => {
-                    commit('loginSuccess', accessToken.data);
+                    if(accessToken.data.attributes !== undefined) {
+                        commit('loginSuccess', accessToken.data);
+                    }
                     return Promise.resolve(accessToken);
                 },
                 error => {
-                    console.log(error)
                     commit('loginFailure');
                     return Promise.reject(error);
                 }
@@ -126,7 +127,6 @@ export const auth = {
          * @param {*} state 
          */
         loginFailure(state) {
-            state.status.loggedIn = false;
             state.user = null;
         },
 

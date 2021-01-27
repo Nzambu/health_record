@@ -130,7 +130,7 @@
                                                 color="blue"
                                                 x-small
                                                 @click="handleRegister"
-                                            >Register</v-btn>
+                                            >Create Account</v-btn>
                                         </v-col> 
                                     </v-row>
                                 </v-form>

@@ -11,7 +11,7 @@
                     >
                         <v-list-item two-line>
                             <v-list-item-content>
-                                <v-list-item-title>Patient Health Records</v-list-item-title>
+                                <v-list-item-title class="grey--text">Patient Health Records</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-col>
@@ -67,7 +67,11 @@
                         >
                             <v-card>
                                 <v-card-title class="text-center">
-                                    <span class="headline">Patient Health Record</span>
+                                    <v-list-item>
+                                        <v-list-item-content class="pb-0">
+                                            <v-list-item-title class="grey--text text-center">Patient Health Record</v-list-item-title>
+                                        </v-list-item-content>
+                                    </v-list-item>
                                 </v-card-title>
                                 <v-card-text>
                                     <v-container>
@@ -216,6 +220,80 @@
                         </v-dialog>
                         
                         <!-- End of Dialog/Modal -->
+                        
+                        <v-dialog
+                            v-model="showDeleteModal"
+                            persistent
+                            max-width="400px"
+                        >
+                        <!-- <v-dialog
+                            v-model="showDeleteModal"
+                            persistent
+                            max-width="600px"
+                        > -->
+                            <v-card>
+                                <v-card-title class="text-center">
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <v-list-item-title class="grey--text">Delete Health Record</v-list-item-title>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container class="text-center"> 
+                                        <v-list-item>
+                                            <v-list-item-content>
+                                                <v-list-item-title class="grey-text">{{ this.deletePatientData.name }}</v-list-item-title>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <v-avatar
+                                            size="100"
+                                        >
+                                            <v-icon 
+                                                class="red--text"
+                                                x-large
+                                            >mdi-delete-forever</v-icon>
+                                        </v-avatar>
+                                        <v-list-item two-line>
+                                            <v-list-item-content>
+                                                <v-list-item-title class="py-2">Are you sure?</v-list-item-title>                                            
+                                                <v-list-item-subtitle class="grey--text">Do you really want to delete the record? <br/>Will delete record permanently!</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                    </v-container>
+                                </v-card-text>
+                                <v-card-actions class="px-10 pb-5">
+                                    <v-row>
+                                        <!-- <v-spacer></v-spacer>    -->
+
+                                        <!-- Cancel add or edit patient -->
+
+                                        <v-btn
+                                            color="grey darken-1"
+                                            class="white--text text-capitalize"
+                                            @click="closeDeletePatientModal()"
+                                        >
+                                        Cancel
+                                        </v-btn>
+
+                                        <!-- End -->
+
+                                        <v-spacer></v-spacer>
+
+                                        <!-- Save changes on patient record -->
+
+                                        <v-btn
+                                            class="red text-capitalize white--text"   
+                                            @click="handleDeletePatient()"                  
+                                        >Delete</v-btn>
+
+                                        <!-- End -->
+                                    </v-row>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+
+
 
                     </v-col>
                 </v-row>
@@ -232,6 +310,7 @@
                         class="elevation-1"
                         @page-count="pageCount = $event" 
                         height="600px"
+                        :loading="dataTableLoading"
                     >
                         <template v-slot:[`item.relationships.gender[0].attributes.sex`]="{ item }">
                             <v-chip
@@ -246,7 +325,7 @@
                             <v-icon
                                 medium
                                 color="red"
-                                @click="handleDeletePatient(item)"
+                                @click="showDeletePatientModal(item)"
                                 class="ml-2 text-center"
                             >
                                 mdi-delete-circle
@@ -287,6 +366,9 @@ export default {
             addPatient : false,
             editPatient : false,
             showModal : false,
+            showDeleteModal : false,
+            deletePatientData : '',
+            dataTableLoading : true,
             searchPatient : '',
             patientList : [],
             tableHeaders : [
@@ -375,7 +457,7 @@ export default {
         });
     },
     methods : {
-        
+
         /**
          * Toggle show and add patients
          */
@@ -468,6 +550,7 @@ export default {
                          * Assign the list to a custom model - loads data without refreshing to get the data
                          */
                         this.patientList = this.$store.state.patient.list
+                        this.dataTableLoading = !this.dataTableLoading;
                     }
                 }
             )
@@ -523,12 +606,48 @@ export default {
                 }
             );
         },
+
+        showDeletePatientModal(patient) {
+            if(patient) { 
+                this.deletePatientData = { 
+                    id : patient.id,
+                    name : patient.attributes.name
+                }
+                this.showDeleteModal = !this.showDeleteModal
+            }
+        },
         
+        closeDeletePatientModal() {
+            // clear deleted patient data
+            this.deletePatientData = []
+
+            // Hide the modal
+            this.showDeleteModal = !this.showDeleteModal
+        },
+
         /**
          * Handle delete a patient record
          */
-        handleDeletePatient(patient) {
-            console.log(patient)
+        handleDeletePatient() {
+            let patient = this.deletePatientData
+            this.$store.dispatch('patient/deletePatient', patient.id).then(
+                feedback => {
+                    let status = feedback.status
+                    switch(status) {
+                        case 200 :
+                            console.log(feedback)
+                            this.closeDeletePatientModal()
+                            break;
+                        default :
+                            console.log(feedback);
+                    }
+                },
+                error => {
+                    console.log(error)
+                }
+            )
+            
+            
         },
 
         /**

@@ -76,8 +76,8 @@ export const patient = {
             return PatientService.deletePatient(patientID).then(
                 patient => {
                     let record = patient.data
-                    commit('delete', record);
-                    return Promise.resolve(record)
+                    commit('delete', record.id);
+                    return Promise.resolve(patient)
                 },
                 error => {
                     commit('fail');
@@ -139,7 +139,13 @@ export const patient = {
             }
         },
         delete(state, patientID) {
-            state.list = state.list.filter((patients) => patients.id !== patientID)
+            // state.list = state.list.filter((patients) => patients.id !== patientID)
+
+            // index = state.cars.findIndex(car => car.id == id)
+            // state.cars.splice(index, 1)
+
+            let patientIndex = state.list.findIndex(() => patientID)
+            state.list.splice(patientIndex, 1)
         },
         gender(state, genders) {
             state.gender = genders

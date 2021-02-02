@@ -7,8 +7,8 @@ import axios from 'axios'
 
 
     const Axios = axios.create({
-        // baseURL: 'http://localhost:8000/api/',
-        baseURL : 'http://localhost/1/medbook-dev-app/public/api/',
+        baseURL: 'http://localhost:8000/api/',
+        // baseURL : 'http://localhost/1/medbook-dev-app/public/api/',
         // baseURL : 'http://backend.nvc-invoice.com/',
         // timeout : 1000,
         headers: { common : {

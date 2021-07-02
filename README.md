@@ -1,6 +1,6 @@
 Follow the steps below to test the application
 
-1. Download or Clone the backend and frond end from git hub link - https://github.com/Nzambu/medbook-dev-app
+1. Download or Clone the backend and frond end from git hub link - https://github.com/Nzambu/health_record
 
 2. navigate to medbook-dev-app and run the following commands
 
